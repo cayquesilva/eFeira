@@ -5,6 +5,8 @@
  */
 package eFeira;
 
+import java.util.Scanner;
+
 /**
  *
  * @author Lab-NTM-01
@@ -12,9 +14,9 @@ package eFeira;
 public class Produto {
     private String nome;
     private double preço;
-    private int tipo; //1 unidade / 2 Quilos
+    private int quantidade,tipo,codigo; //1 unidade / 2 Quilos
 
-    
+   
     public String getNome() {
         return nome;
     }
@@ -38,7 +40,23 @@ public class Produto {
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
+
+    public int getCodigo() {
+        return codigo;
+    }
     
     
     
+    public void setCogigo(int codigo){
+        this.codigo = codigo;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
 }

@@ -11,19 +11,11 @@ package eFeira;
  */
 public class ClasseTeste {
     public static void main(String[] args){
-        int opcao;
+       
         Menu m = new Menu();
-        switch(opcao=m.chamaMenu()){
-            case 1:
-                m.menuVendas();
-                break;
-                
-            case 2:
-                m.menuGerente();
-                break;
-        }
-        
-        
+        m.chamaMenu();
+       //System.out.println(Estoque.produto[0]);
+        //System.out.println(Estoque.produto[1]);
         
     }
 }

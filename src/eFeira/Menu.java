@@ -15,7 +15,7 @@ public class Menu {
     private int op=0,aux=0;
     private Scanner s = new Scanner(System.in);
     
-    public int chamaMenu(){
+    public void chamaMenu(){
         do{
 //            menuLimpaTela();
             System.out.println("|-------------------------------------|");
@@ -30,12 +30,25 @@ public class Menu {
             System.out.println("|                                     |");
             System.out.println("|       [1] Ver menu de vendas        |");
             System.out.println("|       [2] Administrar estoque       |");
+            System.out.println("|       [0] Sair                      |");
             System.out.println("|                                     |");
             System.out.println("|-------------------------------------|");
             op=s.nextInt();
             s.nextLine();
+            switch(op){
+            case 1:
+                menuVendas();
+                break;
+                
+            case 2:
+                menuGerente();
+                break;
+                
+            case 0:
+                break;
+                
+        }
             //menuLimpaTela();
-            return op;
         }while(op!=0);
     }
     
@@ -51,20 +64,30 @@ public class Menu {
             System.out.println("|                                     |");
             System.out.println("|-------------------------------------|");
             System.out.println("|                                     |");
-            System.out.println("|       [1] Ver produtos a venda      |");
-            System.out.println("|       [2] Administrar estoque       |");
+            System.out.println("|       [1] Comprar produtos          |");
+            System.out.println("|       [2] Finalizar compra          |");
             System.out.println("|                                     |");
             System.out.println("|-------------------------------------|");
             aux=s.nextInt();
             s.nextLine();
         switch(aux){
             case 1:
-                
-            break;
+                System.out.println(Estoque.getProduto());
+                System.out.println("|--- Deseja continuar no menu de vendas ? |");
+                System.out.println("|             [1] Sim                     |");
+                System.out.println("|             [2] Não                     |");
+                System.out.println("|-----------------------------------------|");
+                op=s.nextInt();
+                s.nextLine();
+                menuLimpaTela();
+                if(op==1){
+                    menuVendas();
+                }
+                break;
             
             case 2:
                 
-            break;
+                break;
                 
         }
 
@@ -101,7 +124,6 @@ public class Menu {
             case 3:
                 chamaMenu();
                 break;
-                
         }
 
     }
@@ -121,27 +143,104 @@ public class Menu {
             System.out.println("|       [1] Adicionar produtos        |");
             System.out.println("|       [2] Remover produtos          |");
             System.out.println("|       [3] Editar produtos           |");
-            System.out.println("|                                     |");
+            System.out.println("|       [4] Voltar para o início      |");
             System.out.println("|-------------------------------------|");
             aux=s.nextInt();
             s.nextLine();
         switch(aux){
             case 1:
-                System.out.println("Digite a referência do produto");
+                Estoque.cadastraProduto(new Produto());
+                System.out.println("|--- Deseja continuar no menu de estoque? |");
+                System.out.println("|             [1] Sim                     |");
+                System.out.println("|             [2] Não                     |");
+                System.out.println("|-----------------------------------------|");
+                op=s.nextInt();
                 s.nextLine();
+                menuLimpaTela();
+                if(op==1){
+                    menuEstoque();
+                }
                 break;
             
             case 2:
-                
+                if(Estoque.getProdutoSelecao2()==1){
+                    Estoque.delProduto(s.nextInt());
+                    System.out.println("|--- Deseja continuar no menu de estoque? |");
+                    System.out.println("|             [1] Sim                     |");
+                    System.out.println("|             [2] Não                     |");
+                    System.out.println("|-----------------------------------------|");
+                    op=s.nextInt();
+                    s.nextLine();
+                    menuLimpaTela();
+                    if(op==1){
+                        menuEstoque();
+                    }
+                }else{
+                    System.out.println("|--- Deseja continuar no menu de estoque? |");
+                    System.out.println("|             [1] Sim                     |");
+                    System.out.println("|             [2] Não                     |");
+                    System.out.println("|-----------------------------------------|");
+                    op=s.nextInt();
+                    s.nextLine();
+                    menuLimpaTela();
+                    if(op==1){
+                        menuEstoque();
+                    }
+                    break;
+                }
                 break;
             
             case 3:
+                if(Estoque.getProdutoSelecao()==1){
+                    atualizaQuant(s.nextInt());
+                    System.out.println("|--- Deseja continuar no menu de estoque? |");
+                    System.out.println("|             [1] Sim                     |");
+                    System.out.println("|             [2] Não                     |");
+                    System.out.println("|-----------------------------------------|");
+                    op=s.nextInt();
+                    s.nextLine();
+                    menuLimpaTela();
+                    if(op==1){
+                        menuEstoque();
+                    }
+                }else{
+                    System.out.println("|--- Deseja continuar no menu de estoque? |");
+                    System.out.println("|             [1] Sim                     |");
+                    System.out.println("|             [2] Não                     |");
+                    System.out.println("|-----------------------------------------|");
+                    op=s.nextInt();
+                    s.nextLine();
+                    menuLimpaTela();
+                    if(op==1){
+                        menuEstoque();
+                    }
+                    break;
+                }
+            case 4:
                 chamaMenu();
                 break;
-                
         }
-
     }
+    
+    public void atualizaQuant(int i){
+        s.nextLine();
+        System.out.println("|--- Deseja realizar que ação para o item selecionado? |");
+        System.out.println("|             [1] Adicionar                            |");
+        System.out.println("|             [2] Remover                              |");
+        System.out.println("|------------------------------------------------------|");
+        op=s.nextInt();
+        s.nextLine();
+        if(op==1){
+            System.out.println("Digite a quantidade de "+Estoque.produto.get(i).getNome()+" que você deseja adicionar: ");
+            Estoque.produto.get(i).setQuantidade(Estoque.produto.get(i).getQuantidade()+s.nextInt());
+            s.nextLine();
+        }else{
+            System.out.println("Digite a quantidade de "+Estoque.produto.get(i).getNome()+" que você deseja remover: ");
+            Estoque.produto.get(i).setQuantidade(Estoque.produto.get(i).getQuantidade()-s.nextInt());
+            s.nextLine();
+        }
+    }
+    
     
     public void menuLimpaTela(){
         for(int i=0;i<5;i++){

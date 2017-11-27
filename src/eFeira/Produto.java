@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 package eFeira;
-
-import java.util.Scanner;
-
 /**
  *
  * @author Lab-NTM-01
@@ -44,9 +41,7 @@ public class Produto {
     public int getCodigo() {
         return codigo;
     }
-    
-    
-    
+
     public void setCogigo(int codigo){
         this.codigo = codigo;
     }
@@ -59,4 +54,9 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
+    @Override
+    public String toString() {
+        return "Produto{" + "nome=" + nome + ", preço=" + preço + ", quantidade=" + quantidade + ", tipo=" + tipo + ", codigo=" + codigo + '}';
+    }
+    
 }

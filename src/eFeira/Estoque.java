@@ -32,7 +32,7 @@ public class Estoque {
         System.out.println("Digite o codigo do produto: ");
         Estoque.produto.get(i).setCogigo(s.nextInt());
         System.out.println("Digite o preço do produto: ");
-        Estoque.produto.get(i).setPreço(s.nextDouble());
+        Estoque.produto.get(i).setPreçoEntrada(s.nextDouble());
         System.out.println("Digite a quantidade de produtos desse tipo: ");
         Estoque.produto.get(i).setQuantidade(s.nextInt());
         s.nextLine();

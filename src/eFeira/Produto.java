@@ -10,7 +10,7 @@ package eFeira;
  */
 public class Produto {
     private String nome;
-    private double preço;
+    private double preçoEntrada=0,preçoSaida=0;
     private int quantidade,tipo,codigo; //1 unidade / 2 Quilos
 
    
@@ -22,12 +22,12 @@ public class Produto {
         this.nome = nome;
     }
 
-    public double getPreço() {
-        return preço;
+    public double getPreçoEntrada() {
+        return preçoEntrada;
     }
 
-    public void setPreço(double preço) {
-        this.preço = preço;
+    public void setPreçoEntrada(double preço) {
+        this.preçoEntrada = preço;
     }
 
     public int getTipo() {
@@ -54,9 +54,16 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
-    @Override
-    public String toString() {
-        return "Produto{" + "nome=" + nome + ", preço=" + preço + ", quantidade=" + quantidade + ", tipo=" + tipo + ", codigo=" + codigo + '}';
+    public double getPreçoSaida() {
+        return preçoSaida;
+    }
+
+    public void setPreçoSaida(double preçoSaida) {
+        this.preçoSaida = preçoSaida;
     }
     
+     @Override
+    public String toString() {
+        return "Produto{" + "nome=" + nome + ", preço de compra=" + preçoEntrada + ", quantidade=" + quantidade + ", tipo=" + tipo + ", codigo=" + codigo + '}';
+    }
 }

@@ -28,52 +28,95 @@ public class PainelFrontal extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jDialog1 = new javax.swing.JDialog();
+        JdpPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
+        jMenuTopoCadastros = new javax.swing.JMenu();
+        jMenuProdutos = new javax.swing.JMenuItem();
+        jMenuCliente = new javax.swing.JMenuItem();
+        jMenuTopoCompra = new javax.swing.JMenu();
+        jMenuTopoVenda = new javax.swing.JMenu();
+        jMenuTopoRelatorios = new javax.swing.JMenu();
+        JMenuRelProdutos = new javax.swing.JMenuItem();
+        jMenuTopoSair = new javax.swing.JMenu();
 
         jLabel1.setText("jLabel1");
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("eFeira - Cayque Silva");
 
-        jMenu1.setText("Cadastros");
+        javax.swing.GroupLayout JdpPrincipalLayout = new javax.swing.GroupLayout(JdpPrincipal);
+        JdpPrincipal.setLayout(JdpPrincipalLayout);
+        JdpPrincipalLayout.setHorizontalGroup(
+            JdpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1083, Short.MAX_VALUE)
+        );
+        JdpPrincipalLayout.setVerticalGroup(
+            JdpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 518, Short.MAX_VALUE)
+        );
 
-        jMenuItem1.setText("Produtos");
-        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuTopoCadastros.setText("Cadastros");
+
+        jMenuProdutos.setText("Produtos");
+        jMenuProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem1MouseClicked(evt);
+                jMenuProdutosMouseClicked(evt);
             }
         });
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuProdutosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenuTopoCadastros.add(jMenuProdutos);
 
-        jMenuBar1.add(jMenu1);
+        jMenuCliente.setText("Clientes");
+        jMenuCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuClienteActionPerformed(evt);
+            }
+        });
+        jMenuTopoCadastros.add(jMenuCliente);
 
-        jMenu3.setText("Compra");
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(jMenuTopoCadastros);
 
-        jMenu4.setText("Venda");
-        jMenuBar1.add(jMenu4);
+        jMenuTopoCompra.setText("Compra");
+        jMenuBar1.add(jMenuTopoCompra);
 
-        jMenu2.setText("Relatórios");
-        jMenuBar1.add(jMenu2);
+        jMenuTopoVenda.setText("Venda");
+        jMenuBar1.add(jMenuTopoVenda);
 
-        jMenu5.setText("Sair");
-        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuTopoRelatorios.setText("Relatórios");
+
+        JMenuRelProdutos.setText("Produtos");
+        JMenuRelProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JMenuRelProdutosActionPerformed(evt);
+            }
+        });
+        jMenuTopoRelatorios.add(JMenuRelProdutos);
+
+        jMenuBar1.add(jMenuTopoRelatorios);
+
+        jMenuTopoSair.setText("Sair");
+        jMenuTopoSair.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu5MouseClicked(evt);
+                jMenuTopoSairMouseClicked(evt);
             }
         });
-        jMenuBar1.add(jMenu5);
+        jMenuBar1.add(jMenuTopoSair);
 
         setJMenuBar(jMenuBar1);
 
@@ -81,31 +124,52 @@ public class PainelFrontal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(JdpPrincipal)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JdpPrincipal)
+                .addContainerGap())
         );
 
-        setSize(new java.awt.Dimension(800, 600));
+        setSize(new java.awt.Dimension(1109, 600));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMenuProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuProdutosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        jifCadastro obj = new jifCadastro();
+        JdpPrincipal.add(obj);
+        obj.setVisible(true);
+    }//GEN-LAST:event_jMenuProdutosActionPerformed
 
-    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
+    private void jMenuTopoSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuTopoSairMouseClicked
         // TODO add your handling code here:
         System.exit(0);
-    }//GEN-LAST:event_jMenu5MouseClicked
+    }//GEN-LAST:event_jMenuTopoSairMouseClicked
 
-    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
+    private void jMenuProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuProdutosMouseClicked
         // TODO add your handling code here:
-        PainelProdutos frame = new PainelProdutos();
-        frame.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1MouseClicked
+    }//GEN-LAST:event_jMenuProdutosMouseClicked
+
+    private void jMenuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuClienteActionPerformed
+        // TODO add your handling code here:
+        jifClientes obj = new jifClientes();
+        JdpPrincipal.add(obj);
+        obj.setVisible(true);
+    }//GEN-LAST:event_jMenuClienteActionPerformed
+
+    private void JMenuRelProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuRelProdutosActionPerformed
+        // TODO add your handling code here:
+        jifRelatorioProduto obj = new jifRelatorioProduto();
+        JdpPrincipal.add(obj);
+        obj.setVisible(true);
+    }//GEN-LAST:event_JMenuRelProdutosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,13 +207,17 @@ public class PainelFrontal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem JMenuRelProdutos;
+    private javax.swing.JDesktopPane JdpPrincipal;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuCliente;
+    private javax.swing.JMenuItem jMenuProdutos;
+    private javax.swing.JMenu jMenuTopoCadastros;
+    private javax.swing.JMenu jMenuTopoCompra;
+    private javax.swing.JMenu jMenuTopoRelatorios;
+    private javax.swing.JMenu jMenuTopoSair;
+    private javax.swing.JMenu jMenuTopoVenda;
     // End of variables declaration//GEN-END:variables
 }

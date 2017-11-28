@@ -12,12 +12,25 @@ package InterfaceGrafica;
 public class PainelFrontal extends javax.swing.JFrame {
 
     /**
+     * @return the JdpPrincipal
+     */
+    public javax.swing.JDesktopPane getJdpPrincipal() {
+        return JdpPrincipal;
+    }
+
+    /**
+     * @param JdpPrincipal the JdpPrincipal to set
+     */
+    public void setJdpPrincipal(javax.swing.JDesktopPane JdpPrincipal) {
+        this.JdpPrincipal = JdpPrincipal;
+    }
+
+    /**
      * Creates new form PainelFrontal
      */
     public PainelFrontal() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -143,9 +156,14 @@ public class PainelFrontal extends javax.swing.JFrame {
 
     private void jMenuProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuProdutosActionPerformed
         // TODO add your handling code here:
-        jifCadastro obj = new jifCadastro();
-        JdpPrincipal.add(obj);
-        obj.setVisible(true);
+        jifLogin log = new jifLogin();
+        getJdpPrincipal().add(log);
+        log.setVisible(true);
+        //if(log.flag == 1){
+            jifCadastro obj = new jifCadastro();
+            getJdpPrincipal().add(obj);
+            obj.setVisible(true);
+        //}
     }//GEN-LAST:event_jMenuProdutosActionPerformed
 
     private void jMenuTopoSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuTopoSairMouseClicked
@@ -159,15 +177,15 @@ public class PainelFrontal extends javax.swing.JFrame {
 
     private void jMenuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuClienteActionPerformed
         // TODO add your handling code here:
-        jifClientes obj = new jifClientes();
-        JdpPrincipal.add(obj);
+        jifLogin obj = new jifLogin();
+        getJdpPrincipal().add(obj);
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuClienteActionPerformed
 
     private void JMenuRelProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuRelProdutosActionPerformed
         // TODO add your handling code here:
-        jifRelatorioProduto obj = new jifRelatorioProduto();
-        JdpPrincipal.add(obj);
+        jifComprarProdutos obj = new jifComprarProdutos();
+        getJdpPrincipal().add(obj);
         obj.setVisible(true);
     }//GEN-LAST:event_JMenuRelProdutosActionPerformed
 
@@ -199,13 +217,12 @@ public class PainelFrontal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PainelFrontal().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new PainelFrontal().setVisible(true);
         });
     }
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem JMenuRelProdutos;
     private javax.swing.JDesktopPane JdpPrincipal;

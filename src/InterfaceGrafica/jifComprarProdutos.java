@@ -119,11 +119,10 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        //Produto produto = new Produto();
         DefaultTableModel dtmProduto = (DefaultTableModel) jTProdutos2.getModel();
-        for (Produto produto1 : ConProduto.getProduto()) {
+        ConProduto.getProduto().forEach((produto1) -> {
             dtmProduto.addRow(new String[]{produto1.getNome(), String.valueOf(produto1.getCodigo()), String.valueOf(produto1.getPreçoEntrada()), String.valueOf(produto1.getPreçoSaida()), String.valueOf(produto1.getQuantidade())});
-        }
+        });
     }//GEN-LAST:event_jButton3ActionPerformed
     
 

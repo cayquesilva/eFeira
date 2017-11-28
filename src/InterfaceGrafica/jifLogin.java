@@ -6,6 +6,7 @@
 package InterfaceGrafica;
 
 import java.awt.event.KeyEvent;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,11 +17,13 @@ public class jifLogin extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form jifClientes
+     * @param x
      */
-    public jifLogin() {
+    public jifLogin(JDesktopPane x) {
+        this.desk = x;
         initComponents();
     }
-    public int flag;
+    private JDesktopPane desk;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,9 +43,9 @@ public class jifLogin extends javax.swing.JInternalFrame {
 
         setTitle("eFeira - Cadastro de Clientes");
 
-        jLblNome.setText("Usuário");
+        jLblNome.setText("Usuário:");
 
-        jLblCpf.setText("Senha");
+        jLblCpf.setText("Senha:");
 
         jBtnLogin.setText("Login");
         jBtnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -58,7 +61,6 @@ public class jifLogin extends javax.swing.JInternalFrame {
             }
         });
 
-        jPasswordField1.setText("jPasswordField1");
         jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jPasswordField1KeyPressed(evt);
@@ -69,22 +71,25 @@ public class jifLogin extends javax.swing.JInternalFrame {
         jPLogin.setLayout(jPLoginLayout);
         jPLoginLayout.setHorizontalGroup(
             jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPLoginLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPLoginLayout.createSequentialGroup()
-                        .addGroup(jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLblNome)
-                            .addComponent(jLblCpf))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTxtUser, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPLoginLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPLoginLayout.createSequentialGroup()
                         .addComponent(jBtnLogin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBtnSair)))
-                .addGap(32, 32, 32))
+                        .addGap(18, 18, 18)
+                        .addComponent(jBtnSair)
+                        .addContainerGap(48, Short.MAX_VALUE))
+                    .addGroup(jPLoginLayout.createSequentialGroup()
+                        .addGroup(jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPLoginLayout.createSequentialGroup()
+                                .addComponent(jLblNome)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTxtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPLoginLayout.createSequentialGroup()
+                                .addComponent(jLblCpf)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPLoginLayout.setVerticalGroup(
             jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,16 +113,14 @@ public class jifLogin extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        setBounds(100, 0, 227, 139);
+        setBounds(100, 0, 224, 139);
     }// </editor-fold>//GEN-END:initComponents
     public boolean checkLogin(String login, String senha){
         return login.equals("usuario") && senha.equals("123");         
@@ -127,16 +130,18 @@ public class jifLogin extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if(checkLogin(jTxtUser.getText(),new String(jPasswordField1.getPassword()))){
             JOptionPane.showMessageDialog(null, "Bem vindo!");
-            this.dispose();
-            flag=1;
+            dispose();
+            jifCadastro obj = new jifCadastro();
+            desk.add(obj);
+            obj.setVisible(true);
+            
         }else{
             JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos!");
-            flag=2;
         }
     }//GEN-LAST:event_jBtnLoginActionPerformed
     private void jBtnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSairActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        dispose();
     }//GEN-LAST:event_jBtnSairActionPerformed
 
     private void jPasswordField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyPressed
@@ -144,11 +149,12 @@ public class jifLogin extends javax.swing.JInternalFrame {
         if(evt.getKeyCode()== KeyEvent.VK_ENTER){
             if(checkLogin(jTxtUser.getText(),new String(jPasswordField1.getPassword()))){
                 JOptionPane.showMessageDialog(null, "Bem vindo!");
-                this.dispose();
-                this.flag=1;
+                dispose();
+                jifCadastro obj = new jifCadastro();
+                desk.add(obj);
+                obj.setVisible(true);
             }else{
                 JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos!");
-                this.flag=2;
             }
         }
     }//GEN-LAST:event_jPasswordField1KeyPressed

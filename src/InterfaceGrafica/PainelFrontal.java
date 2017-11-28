@@ -156,13 +156,13 @@ public class PainelFrontal extends javax.swing.JFrame {
 
     private void jMenuProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuProdutosActionPerformed
         // TODO add your handling code here:
-        jifLogin log = new jifLogin();
+        jifLogin log = new jifLogin(JdpPrincipal);
         getJdpPrincipal().add(log);
         log.setVisible(true);
         //if(log.flag == 1){
-            jifCadastro obj = new jifCadastro();
-            getJdpPrincipal().add(obj);
-            obj.setVisible(true);
+            //jifCadastro obj = new jifCadastro();
+            //getJdpPrincipal().add(obj);
+            //obj.setVisible(true);
         //}
     }//GEN-LAST:event_jMenuProdutosActionPerformed
 
@@ -177,7 +177,7 @@ public class PainelFrontal extends javax.swing.JFrame {
 
     private void jMenuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuClienteActionPerformed
         // TODO add your handling code here:
-        jifLogin obj = new jifLogin();
+        jifLogin obj = new jifLogin(JdpPrincipal);
         getJdpPrincipal().add(obj);
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuClienteActionPerformed
@@ -205,15 +205,11 @@ public class PainelFrontal extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PainelFrontal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PainelFrontal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PainelFrontal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(PainelFrontal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */

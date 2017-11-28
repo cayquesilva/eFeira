@@ -6,22 +6,22 @@
 package Controle;
 
 import eFeira.Produto;
+import java.util.ArrayList;
 
 /**
  *
  * @author Cayque
  */
 public class ConProduto {
-    private static Produto[] produto = new Produto[10];
-    private static int i=0;
+    private static ArrayList<Produto> produto = new ArrayList<Produto>();
+
     
-    public static Produto[] getProduto() {
+    public static ArrayList<Produto> getProduto() {
         return produto;
     }
 
     public static void setProduto(Produto produto) {
-        ConProduto.produto[i]=produto;
-        i++;
+        ConProduto.produto.add(produto);
     }
     
     

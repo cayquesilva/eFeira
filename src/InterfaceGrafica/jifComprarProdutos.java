@@ -35,7 +35,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTProdutos2 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jBtnFinalCompra = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         jTProdutos2.setModel(new javax.swing.table.DefaultTableModel(
@@ -55,7 +55,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Remover Produto");
+        jBtnFinalCompra.setText("Finalizar compra");
 
         jButton3.setText("Listar produtos cadastrados");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -72,7 +72,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(jBtnFinalCompra)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -88,7 +88,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jBtnFinalCompra))
                 .addGap(30, 30, 30)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -127,8 +127,8 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBtnFinalCompra;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -6,8 +6,8 @@
 package InterfaceGrafica;
 
 import Controle.ConProduto;
-import eFeira.Estoque;
 import eFeira.Produto;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,7 +22,6 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     public jifCadastro() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -228,8 +227,24 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             new String [] {
                 "Nome", "Código", "Preç. de compra", "Preç. de venda", "Quantidade"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTProdutos.setEnabled(false);
         jScrollPane1.setViewportView(jTProdutos);
+        if (jTProdutos.getColumnModel().getColumnCount() > 0) {
+            jTProdutos.getColumnModel().getColumn(0).setResizable(false);
+            jTProdutos.getColumnModel().getColumn(1).setResizable(false);
+            jTProdutos.getColumnModel().getColumn(2).setResizable(false);
+            jTProdutos.getColumnModel().getColumn(3).setResizable(false);
+            jTProdutos.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -307,8 +322,26 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBtnNovoActionPerformed
 
     private void jBtnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPesquisarActionPerformed
-        // TODO add your handling code here:
-        jBtnExcluir.setEnabled(true);
+        ConProduto.getProduto().forEach((produto1) -> {
+        if(Integer.parseInt(jTxtCodigo.getText()) == produto1.getCodigo()){
+            DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
+            dtmProdutos.setRowCount(0);
+            dtmProdutos.addRow(new String []{
+                produto1.getNome(),
+                String.valueOf(produto1.getCodigo()) ,
+                String.valueOf(produto1.getPreçoEntrada()),
+                String.valueOf(produto1.getPreçoSaida()),
+                String.valueOf(produto1.getQuantidade())
+            });
+            jTProdutos.setEnabled(true);
+            jTxtCodigo.setText("");
+            jBtnExcluir.setEnabled(true);
+        }else{
+            jTxtCodigo.setText("");
+            JOptionPane.showMessageDialog(null,"Produto não encontrado ");
+
+        }
+        });
     }//GEN-LAST:event_jBtnPesquisarActionPerformed
 
 

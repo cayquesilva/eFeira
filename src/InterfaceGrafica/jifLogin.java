@@ -41,7 +41,7 @@ public class jifLogin extends javax.swing.JInternalFrame {
         jTxtUser = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
 
-        setTitle("eFeira - Cadastro de Clientes");
+        setTitle("eFeira - Autenticação");
 
         jLblNome.setText("Usuário:");
 
@@ -78,7 +78,7 @@ public class jifLogin extends javax.swing.JInternalFrame {
                         .addComponent(jBtnLogin)
                         .addGap(18, 18, 18)
                         .addComponent(jBtnSair)
-                        .addContainerGap(48, Short.MAX_VALUE))
+                        .addContainerGap(44, Short.MAX_VALUE))
                     .addGroup(jPLoginLayout.createSequentialGroup()
                         .addGroup(jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPLoginLayout.createSequentialGroup()
@@ -106,7 +106,7 @@ public class jifLogin extends javax.swing.JInternalFrame {
                 .addGroup(jPLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnSair)
                     .addComponent(jBtnLogin))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -117,10 +117,10 @@ public class jifLogin extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setBounds(100, 0, 224, 139);
+        setBounds(100, 0, 220, 150);
     }// </editor-fold>//GEN-END:initComponents
     public boolean checkLogin(String login, String senha){
         return login.equals("usuario") && senha.equals("123");         

@@ -46,9 +46,6 @@ public class PainelFrontal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuTopoCadastros = new javax.swing.JMenu();
         jMenuProdutos = new javax.swing.JMenuItem();
-        jMenuCliente = new javax.swing.JMenuItem();
-        jMenuTopoCompra = new javax.swing.JMenu();
-        jMenuTopoVenda = new javax.swing.JMenu();
         jMenuTopoRelatorios = new javax.swing.JMenu();
         JMenuRelProdutos = new javax.swing.JMenuItem();
         jMenuTopoSair = new javax.swing.JMenu();
@@ -80,7 +77,7 @@ public class PainelFrontal extends javax.swing.JFrame {
             .addGap(0, 518, Short.MAX_VALUE)
         );
 
-        jMenuTopoCadastros.setText("Cadastros");
+        jMenuTopoCadastros.setText("Administrar Estoque");
 
         jMenuProdutos.setText("Produtos");
         jMenuProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -95,23 +92,9 @@ public class PainelFrontal extends javax.swing.JFrame {
         });
         jMenuTopoCadastros.add(jMenuProdutos);
 
-        jMenuCliente.setText("Clientes");
-        jMenuCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuClienteActionPerformed(evt);
-            }
-        });
-        jMenuTopoCadastros.add(jMenuCliente);
-
         jMenuBar1.add(jMenuTopoCadastros);
 
-        jMenuTopoCompra.setText("Compra");
-        jMenuBar1.add(jMenuTopoCompra);
-
-        jMenuTopoVenda.setText("Venda");
-        jMenuBar1.add(jMenuTopoVenda);
-
-        jMenuTopoRelatorios.setText("Relatórios");
+        jMenuTopoRelatorios.setText("Ver produtos");
 
         JMenuRelProdutos.setText("Produtos");
         JMenuRelProdutos.addActionListener(new java.awt.event.ActionListener() {
@@ -175,13 +158,6 @@ public class PainelFrontal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuProdutosMouseClicked
 
-    private void jMenuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuClienteActionPerformed
-        // TODO add your handling code here:
-        jifLogin obj = new jifLogin(JdpPrincipal);
-        getJdpPrincipal().add(obj);
-        obj.setVisible(true);
-    }//GEN-LAST:event_jMenuClienteActionPerformed
-
     private void JMenuRelProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuRelProdutosActionPerformed
         // TODO add your handling code here:
         jifComprarProdutos obj = new jifComprarProdutos();
@@ -225,12 +201,9 @@ public class PainelFrontal extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuCliente;
     private javax.swing.JMenuItem jMenuProdutos;
     private javax.swing.JMenu jMenuTopoCadastros;
-    private javax.swing.JMenu jMenuTopoCompra;
     private javax.swing.JMenu jMenuTopoRelatorios;
     private javax.swing.JMenu jMenuTopoSair;
-    private javax.swing.JMenu jMenuTopoVenda;
     // End of variables declaration//GEN-END:variables
 }

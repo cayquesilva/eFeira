@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class ConProduto {
     private static ArrayList<Produto> produto = new ArrayList<Produto>();
 
-    
+
     public static ArrayList<Produto> getProduto() {
         return produto;
     }

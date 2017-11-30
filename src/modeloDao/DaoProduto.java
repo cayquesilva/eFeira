@@ -44,6 +44,21 @@ public class DaoProduto {
         conex.desconecta();
     }
     
+    public void Excluir(BeansProduto mod){
+        conex.conexao();
+        try {
+            PreparedStatement pst = conex.con.prepareStatement("delete from produtos where codigo_produto=?");
+            pst.setInt(1, mod.getCodigo());
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Dados excluidos com sucesso!");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir dados:\n"+ex.getMessage());
+        }
+        
+        conex.desconecta();
+    }
+    
+    
     public void Editar(BeansProduto mod){
         conex.conexao();
         try {

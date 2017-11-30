@@ -5,6 +5,7 @@
  */
 package visão;
 
+import javax.swing.JOptionPane;
 import modeloDao.DaoProduto;
 import modeloConection.ConexaoBD;
 import javax.swing.table.DefaultTableModel;
@@ -125,6 +126,11 @@ public class jifCadastro extends javax.swing.JInternalFrame {
 
         jBtnExcluir.setText("Excluir");
         jBtnExcluir.setEnabled(false);
+        jBtnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnExcluirActionPerformed(evt);
+            }
+        });
 
         jBtnPesquisar.setText("Pesquisar");
         jBtnPesquisar.addActionListener(new java.awt.event.ActionListener() {
@@ -387,6 +393,15 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jBtnExcluir.setEnabled(false);
         
     }//GEN-LAST:event_jBtnEditarActionPerformed
+
+    private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
+        int resposta=0;
+        resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
+        if(resposta == JOptionPane.YES_OPTION){
+            mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
+            control.Excluir(mod);
+        }   
+    }//GEN-LAST:event_jBtnExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

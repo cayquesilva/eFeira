@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InterfaceGrafica;
+package visão;
 
-import Controle.ConProduto;
+import modeloDao.DaoProduto;
 import javax.swing.table.DefaultTableModel;
 
 /**

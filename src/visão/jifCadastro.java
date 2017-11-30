@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InterfaceGrafica;
+package visão;
 
-import Controle.ConProduto;
-import Controle.ConexaoBD;
-import eFeira.Produto;
-import javax.swing.JOptionPane;
+import modeloDao.DaoProduto;
+import modeloConection.ConexaoBD;
 import javax.swing.table.DefaultTableModel;
-import modelo.ModeloProduto;
+import modeloBeans.BeansProduto;
 
 /**
  *
@@ -18,9 +16,11 @@ import modelo.ModeloProduto;
  */
 public class jifCadastro extends javax.swing.JInternalFrame {
 
-    ModeloProduto mod = new ModeloProduto();
+    BeansProduto mod = new BeansProduto();
     ConexaoBD conex = new ConexaoBD();
-    ConProduto control = new ConProduto();
+    DaoProduto control = new DaoProduto();
+    int flag = 0;
+    int auxiliar;
     /**
      * Creates new form jifCadastro
      */
@@ -42,6 +42,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jLblQuantidade = new javax.swing.JLabel();
         jLblVenda = new javax.swing.JLabel();
         jLblCompra = new javax.swing.JLabel();
+        jLblId = new javax.swing.JLabel();
         jBtnCadastrar = new javax.swing.JButton();
         jBtnSair = new javax.swing.JButton();
         jTxtNome = new javax.swing.JTextField();
@@ -49,13 +50,12 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtQuantidade = new javax.swing.JTextField();
         jTxtCompra = new javax.swing.JTextField();
         jTxtVenda = new javax.swing.JTextField();
-        jLblData = new javax.swing.JLabel();
         jBtnNovo = new javax.swing.JButton();
         jBtnEditar = new javax.swing.JButton();
         jBtnCancelar = new javax.swing.JButton();
-        JfTxtData = new javax.swing.JFormattedTextField();
         jBtnExcluir = new javax.swing.JButton();
         jBtnPesquisar = new javax.swing.JButton();
+        jTxtID = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTProdutos = new javax.swing.JTable();
 
@@ -74,6 +74,9 @@ public class jifCadastro extends javax.swing.JInternalFrame {
 
         jLblCompra.setText("Preço de compra:");
 
+        jLblId.setText("ID:");
+        jLblId.setEnabled(false);
+
         jBtnCadastrar.setText("Cadastrar");
         jBtnCadastrar.setEnabled(false);
         jBtnCadastrar.addActionListener(new java.awt.event.ActionListener() {
@@ -89,16 +92,13 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             }
         });
 
-        jTxtNome.setEnabled(false);
+        jTxtCodigo.setEnabled(false);
 
         jTxtQuantidade.setEnabled(false);
 
         jTxtCompra.setEnabled(false);
 
         jTxtVenda.setEnabled(false);
-
-        jLblData.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLblData.setText("Data:");
 
         jBtnNovo.setText("Novo");
         jBtnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -109,16 +109,17 @@ public class jifCadastro extends javax.swing.JInternalFrame {
 
         jBtnEditar.setText("Editar");
         jBtnEditar.setEnabled(false);
+        jBtnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnEditarActionPerformed(evt);
+            }
+        });
 
         jBtnCancelar.setText("Cancelar");
         jBtnCancelar.setEnabled(false);
-
-        JfTxtData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-        JfTxtData.setText("//");
-        JfTxtData.setEnabled(false);
-        JfTxtData.addActionListener(new java.awt.event.ActionListener() {
+        jBtnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JfTxtDataActionPerformed(evt);
+                jBtnCancelarActionPerformed(evt);
             }
         });
 
@@ -132,6 +133,10 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             }
         });
 
+        jTxtID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTxtID.setText("000");
+        jTxtID.setEnabled(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -139,55 +144,61 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jBtnCadastrar)
-                    .addComponent(jBtnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBtnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBtnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBtnExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jBtnPesquisar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLblData, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JfTxtData, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
-                        .addComponent(jBtnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jBtnCadastrar)
+                            .addComponent(jBtnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBtnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBtnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBtnExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jBtnPesquisar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jBtnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLblNome)
-                                    .addComponent(jLblCodigo))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jTxtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLblVenda)
+                                            .addComponent(jLblCompra))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLblQuantidade)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jTxtCompra)
+                                            .addComponent(jTxtVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLblNome)
+                                            .addComponent(jLblCodigo))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTxtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jTxtNome)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLblVenda)
-                                    .addComponent(jLblCompra))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTxtCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
-                                    .addComponent(jTxtVenda))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jTxtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jLblQuantidade)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jTxtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jTxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLblId)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTxtID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLblId)
+                    .addComponent(jTxtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLblNome))
@@ -198,15 +209,14 @@ public class jifCadastro extends javax.swing.JInternalFrame {
                                 .addComponent(jLblQuantidade)
                                 .addComponent(jTxtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTxtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLblCompra)
                             .addComponent(jTxtCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTxtVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLblVenda))
-                        .addGap(22, 22, 22))
+                            .addComponent(jLblVenda)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jBtnNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -214,15 +224,13 @@ public class jifCadastro extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jBtnCancelar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jBtnCadastrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addComponent(jBtnCadastrar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JfTxtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLblData)
                     .addComponent(jBtnSair)
                     .addComponent(jBtnExcluir)
                     .addComponent(jBtnPesquisar))
-                .addContainerGap())
+                .addGap(6, 6, 6))
         );
 
         jTProdutos.setModel(new javax.swing.table.DefaultTableModel(
@@ -258,8 +266,8 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -267,25 +275,20 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        setBounds(100, 0, 502, 455);
+        setBounds(100, 0, 502, 492);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void JfTxtDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JfTxtDataActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JfTxtDataActionPerformed
-
     private void jBtnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSairActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-        //this.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+        dispose();
     }//GEN-LAST:event_jBtnSairActionPerformed
 
     private void jBtnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCadastrarActionPerformed
-        // TODO add your handling code here:
+        if(flag==1){
         mod.setNome(jTxtNome.getText());
         mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
         mod.setpCompra(Double.parseDouble(jTxtCompra.getText()));
@@ -297,14 +300,33 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtCompra.setText("");
         jTxtNome.setText("");
         jTxtQuantidade.setText("");
-        jLblData.setText("Produto Cadastrado!");
         jBtnCadastrar.setEnabled(false);
         jBtnCancelar.setEnabled(false);
         jBtnEditar.setEnabled(false);
         jTxtVenda.setEnabled(false);
         jTxtCompra.setEnabled(false);
-        jTxtNome.setEnabled(false);
+        jTxtCodigo.setEnabled(false);
         jTxtQuantidade.setEnabled(false);
+        }else{
+            mod.setNome(jTxtNome.getText());
+            mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
+            mod.setpCompra(Double.parseDouble(jTxtCompra.getText()));
+            mod.setpVenda(Double.parseDouble(jTxtVenda.getText()));
+            mod.setQuantidade(Integer.parseInt(jTxtQuantidade.getText()));
+            control.Editar(mod);
+            jTxtCodigo.setText("");
+            jTxtVenda.setText("");
+            jTxtCompra.setText("");
+            jTxtNome.setText("");
+            jTxtQuantidade.setText("");
+            jBtnCadastrar.setEnabled(false);
+            jBtnCancelar.setEnabled(false);
+            jBtnEditar.setEnabled(false);
+            jTxtVenda.setEnabled(false);
+            jTxtCompra.setEnabled(false);
+            jTxtCodigo.setEnabled(false);
+            jTxtQuantidade.setEnabled(false);
+        }
 
         DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
         dtmProdutos.addRow(new String []{mod.getNome(),String.valueOf(mod.getCodigo()) ,String.valueOf(mod.getpCompra()),String.valueOf(mod.getpVenda()),String.valueOf(mod.getQuantidade())});
@@ -312,26 +334,62 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBtnCadastrarActionPerformed
 
     private void jBtnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnNovoActionPerformed
-        // TODO add your handling code here:
+        flag=1;
         jBtnCadastrar.setEnabled(true);
         jBtnCancelar.setEnabled(true);
+        jTxtCodigo.setEnabled(true);
+        jTxtVenda.setEnabled(true);
+        jTxtCompra.setEnabled(true);
+        jTxtNome.setEnabled(true);
+        jTxtQuantidade.setEnabled(true); 
+    }//GEN-LAST:event_jBtnNovoActionPerformed
+
+    private void jBtnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPesquisarActionPerformed
+        mod.setPesquisa(jTxtNome.getText());
+        BeansProduto model = control.buscaProduto(mod);
+        jTxtID.setText(String.valueOf(model.getId()));
+        jTxtNome.setText(model.getNome());
+        jTxtCodigo.setText(String.valueOf(model.getCodigo()));
+        jTxtCompra.setText(String.valueOf(model.getpCompra()));
+        jTxtVenda.setText(String.valueOf(model.getpVenda()));
+        jTxtQuantidade.setText(String.valueOf(model.getQuantidade()));
         jBtnEditar.setEnabled(true);
+        jBtnExcluir.setEnabled(true);
+        jBtnCancelar.setEnabled(true);
+        mod.setAuxiliar(Integer.parseInt(jTxtCodigo.getText()));
+    }//GEN-LAST:event_jBtnPesquisarActionPerformed
+
+    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
+        jTxtCodigo.setText("");
+        jTxtVenda.setText("");
+        jTxtCompra.setText("");
+        jTxtNome.setText("");
+        jTxtQuantidade.setText("");
+        jBtnCadastrar.setEnabled(false);
+        jBtnCancelar.setEnabled(false);
+        jTxtCodigo.setEnabled(false);
+        jTxtVenda.setEnabled(false);
+        jTxtCompra.setEnabled(false);
+        jTxtNome.setEnabled(false);
+        jTxtQuantidade.setEnabled(false);
+    }//GEN-LAST:event_jBtnCancelarActionPerformed
+
+    private void jBtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEditarActionPerformed
+        flag=2;
+        jBtnCadastrar.setEnabled(true);
+        jBtnCancelar.setEnabled(true);
         jTxtCodigo.setEnabled(true);
         jTxtVenda.setEnabled(true);
         jTxtCompra.setEnabled(true);
         jTxtNome.setEnabled(true);
         jTxtQuantidade.setEnabled(true);
+        jBtnEditar.setEnabled(false);
+        jBtnExcluir.setEnabled(false);
         
-        
-    }//GEN-LAST:event_jBtnNovoActionPerformed
-
-    private void jBtnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPesquisarActionPerformed
-        
-    }//GEN-LAST:event_jBtnPesquisarActionPerformed
+    }//GEN-LAST:event_jBtnEditarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField JfTxtData;
     private javax.swing.JButton jBtnCadastrar;
     private javax.swing.JButton jBtnCancelar;
     private javax.swing.JButton jBtnEditar;
@@ -341,7 +399,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     private javax.swing.JButton jBtnSair;
     private javax.swing.JLabel jLblCodigo;
     private javax.swing.JLabel jLblCompra;
-    private javax.swing.JLabel jLblData;
+    private javax.swing.JLabel jLblId;
     private javax.swing.JLabel jLblNome;
     private javax.swing.JLabel jLblQuantidade;
     private javax.swing.JLabel jLblVenda;
@@ -350,6 +408,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTProdutos;
     private javax.swing.JTextField jTxtCodigo;
     private javax.swing.JTextField jTxtCompra;
+    private javax.swing.JTextField jTxtID;
     private javax.swing.JTextField jTxtNome;
     private javax.swing.JTextField jTxtQuantidade;
     private javax.swing.JTextField jTxtVenda;

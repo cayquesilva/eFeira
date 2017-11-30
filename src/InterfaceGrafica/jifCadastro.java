@@ -6,9 +6,11 @@
 package InterfaceGrafica;
 
 import Controle.ConProduto;
+import Controle.ConexaoBD;
 import eFeira.Produto;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import modelo.ModeloProduto;
 
 /**
  *
@@ -16,6 +18,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class jifCadastro extends javax.swing.JInternalFrame {
 
+    ModeloProduto mod = new ModeloProduto();
+    ConexaoBD conex = new ConexaoBD();
+    ConProduto control = new ConProduto();
     /**
      * Creates new form jifCadastro
      */
@@ -281,13 +286,12 @@ public class jifCadastro extends javax.swing.JInternalFrame {
 
     private void jBtnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCadastrarActionPerformed
         // TODO add your handling code here:
-        Produto produto = new Produto();
-        produto.setNome(jTxtNome.getText());
-        produto.setCogigo(Integer.parseInt(jTxtCodigo.getText()));
-        produto.setPreçoEntrada(Double.parseDouble(jTxtCompra.getText()));
-        produto.setPreçoSaida(Double.parseDouble(jTxtVenda.getText()));
-        produto.setQuantidade(Integer.parseInt(jTxtQuantidade.getText()));
-        ConProduto.setProduto(produto);
+        mod.setNome(jTxtNome.getText());
+        mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
+        mod.setpCompra(Double.parseDouble(jTxtCompra.getText()));
+        mod.setpVenda(Double.parseDouble(jTxtVenda.getText()));
+        mod.setQuantidade(Integer.parseInt(jTxtQuantidade.getText()));
+        control.Salvar(mod);
         jTxtCodigo.setText("");
         jTxtVenda.setText("");
         jTxtCompra.setText("");
@@ -303,7 +307,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtQuantidade.setEnabled(false);
 
         DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
-        dtmProdutos.addRow(new String []{produto.getNome(),String.valueOf(produto.getCodigo()) ,String.valueOf(produto.getPreçoEntrada()),String.valueOf(produto.getPreçoSaida()),String.valueOf(produto.getQuantidade())});
+        dtmProdutos.addRow(new String []{mod.getNome(),String.valueOf(mod.getCodigo()) ,String.valueOf(mod.getpCompra()),String.valueOf(mod.getpVenda()),String.valueOf(mod.getQuantidade())});
 
     }//GEN-LAST:event_jBtnCadastrarActionPerformed
 
@@ -322,26 +326,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBtnNovoActionPerformed
 
     private void jBtnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPesquisarActionPerformed
-        ConProduto.getProduto().forEach((produto1) -> {
-        if(Integer.parseInt(jTxtCodigo.getText()) == produto1.getCodigo()){
-            DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
-            dtmProdutos.setRowCount(0);
-            dtmProdutos.addRow(new String []{
-                produto1.getNome(),
-                String.valueOf(produto1.getCodigo()) ,
-                String.valueOf(produto1.getPreçoEntrada()),
-                String.valueOf(produto1.getPreçoSaida()),
-                String.valueOf(produto1.getQuantidade())
-            });
-            jTProdutos.setEnabled(true);
-            jTxtCodigo.setText("");
-            jBtnExcluir.setEnabled(true);
-        }else{
-            jTxtCodigo.setText("");
-            JOptionPane.showMessageDialog(null,"Produto não encontrado ");
-
-        }
-        });
+        
     }//GEN-LAST:event_jBtnPesquisarActionPerformed
 
 

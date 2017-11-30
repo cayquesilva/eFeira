@@ -5,19 +5,22 @@
  */
 package InterfaceGrafica;
 
+import Controle.ConexaoBD;
+
 /**
  *
  * @author Lab-NTM-01
  */
 public class PainelFrontal extends javax.swing.JFrame {
 
+    ConexaoBD conecta = new ConexaoBD(); //instanciando o objeto da classe conexaoBD
     /**
      * @return the JdpPrincipal
      */
     public javax.swing.JDesktopPane getJdpPrincipal() {
         return JdpPrincipal;
     }
-
+  
     /**
      * @param JdpPrincipal the JdpPrincipal to set
      */
@@ -30,6 +33,7 @@ public class PainelFrontal extends javax.swing.JFrame {
      */
     public PainelFrontal() {
         initComponents();
+        conecta.conexao();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -138,19 +142,13 @@ public class PainelFrontal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuProdutosActionPerformed
-        // TODO add your handling code here:
         jifLogin log = new jifLogin(JdpPrincipal);
         getJdpPrincipal().add(log);
         log.setVisible(true);
-        //if(log.flag == 1){
-            //jifCadastro obj = new jifCadastro();
-            //getJdpPrincipal().add(obj);
-            //obj.setVisible(true);
-        //}
     }//GEN-LAST:event_jMenuProdutosActionPerformed
 
     private void jMenuTopoSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuTopoSairMouseClicked
-        // TODO add your handling code here:
+        conecta.desconecta();
         System.exit(0);
     }//GEN-LAST:event_jMenuTopoSairMouseClicked
 

@@ -18,7 +18,7 @@ public class ConexaoBD {
     public Statement stm; //responsável por realizar pesquisa no BD
     public ResultSet rs; //responsável por armazenar o resultado da pesquisa
     private String driver = "com.mysql.jdbc.Driver"; //Identifica o serviço do BD
-    private String caminho = "jdbc:mysql://localhost/projeto_efeira"; //Caminho do BD
+    private String caminho = "jdbc:mysql://179.183.95.13/projeto_efeira"; //Caminho do BD
     private String usuario = "root"; //User do bd
     private String senha = "vertrigo"; //Senha do bd
     public Connection con; //conexão do banco de dados

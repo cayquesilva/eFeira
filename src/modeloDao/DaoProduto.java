@@ -39,8 +39,6 @@ public class DaoProduto {
             Logger.getLogger(DaoProduto.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Erro ao inserir dados:\n"+ex.getMessage());
         }
-        
-        
         conex.desconecta();
     }
     
@@ -54,7 +52,6 @@ public class DaoProduto {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao excluir dados:\n"+ex.getMessage());
         }
-        
         conex.desconecta();
     }
     

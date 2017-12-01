@@ -5,11 +5,17 @@
  */
 package visão;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import modeloDao.DaoProduto;
 import modeloConection.ConexaoBD;
-import javax.swing.table.DefaultTableModel;
 import modeloBeans.BeansProduto;
+import modeloBeans.ModeloTabela;
 
 /**
  *
@@ -27,6 +33,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
      */
     public jifCadastro() {
         initComponents();
+        preencherTabela("select *from produtos order by nome_produto");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -51,12 +58,12 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtQuantidade = new javax.swing.JTextField();
         jTxtCompra = new javax.swing.JTextField();
         jTxtVenda = new javax.swing.JTextField();
+        jTxtID = new javax.swing.JTextField();
         jBtnNovo = new javax.swing.JButton();
         jBtnEditar = new javax.swing.JButton();
         jBtnCancelar = new javax.swing.JButton();
         jBtnExcluir = new javax.swing.JButton();
         jBtnPesquisar = new javax.swing.JButton();
-        jTxtID = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTProdutos = new javax.swing.JTable();
 
@@ -78,7 +85,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jLblId.setText("ID:");
         jLblId.setEnabled(false);
 
-        jBtnCadastrar.setText("Cadastrar");
+        jBtnCadastrar.setText("Salvar");
         jBtnCadastrar.setEnabled(false);
         jBtnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,6 +107,10 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtCompra.setEnabled(false);
 
         jTxtVenda.setEnabled(false);
+
+        jTxtID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTxtID.setText("000");
+        jTxtID.setEnabled(false);
 
         jBtnNovo.setText("Novo");
         jBtnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -139,9 +150,23 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             }
         });
 
-        jTxtID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTxtID.setText("000");
-        jTxtID.setEnabled(false);
+        jTProdutos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jTProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTProdutosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTProdutos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,12 +176,15 @@ public class jifCadastro extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jBtnCadastrar)
-                            .addComponent(jBtnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jBtnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jBtnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jBtnExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jBtnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                            .addComponent(jBtnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                            .addComponent(jBtnNovo, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                            .addComponent(jBtnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                            .addComponent(jBtnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
@@ -188,7 +216,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jTxtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(jTxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap(104, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLblId)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -198,7 +226,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLblId)
                     .addComponent(jTxtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -236,34 +264,10 @@ public class jifCadastro extends javax.swing.JInternalFrame {
                     .addComponent(jBtnSair)
                     .addComponent(jBtnExcluir)
                     .addComponent(jBtnPesquisar))
-                .addGap(6, 6, 6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        jTProdutos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nome", "Código", "Preç. de compra", "Preç. de venda", "Quantidade"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTProdutos.setEnabled(false);
-        jScrollPane1.setViewportView(jTProdutos);
-        if (jTProdutos.getColumnModel().getColumnCount() > 0) {
-            jTProdutos.getColumnModel().getColumn(0).setResizable(false);
-            jTProdutos.getColumnModel().getColumn(1).setResizable(false);
-            jTProdutos.getColumnModel().getColumn(2).setResizable(false);
-            jTProdutos.getColumnModel().getColumn(3).setResizable(false);
-            jTProdutos.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -271,19 +275,15 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         setBounds(100, 0, 502, 492);
@@ -313,6 +313,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtCompra.setEnabled(false);
         jTxtCodigo.setEnabled(false);
         jTxtQuantidade.setEnabled(false);
+        preencherTabela("select *from produtos order by nome_produto");
         }else{
             mod.setNome(jTxtNome.getText());
             mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
@@ -325,6 +326,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             jTxtCompra.setText("");
             jTxtNome.setText("");
             jTxtQuantidade.setText("");
+            jTxtID.setText("");
             jBtnCadastrar.setEnabled(false);
             jBtnCancelar.setEnabled(false);
             jBtnEditar.setEnabled(false);
@@ -332,11 +334,8 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             jTxtCompra.setEnabled(false);
             jTxtCodigo.setEnabled(false);
             jTxtQuantidade.setEnabled(false);
+            preencherTabela("select *from produtos order by nome_produto");
         }
-
-        DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
-        dtmProdutos.addRow(new String []{mod.getNome(),String.valueOf(mod.getCodigo()) ,String.valueOf(mod.getpCompra()),String.valueOf(mod.getpVenda()),String.valueOf(mod.getQuantidade())});
-
     }//GEN-LAST:event_jBtnCadastrarActionPerformed
 
     private void jBtnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnNovoActionPerformed
@@ -348,6 +347,12 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtCompra.setEnabled(true);
         jTxtNome.setEnabled(true);
         jTxtQuantidade.setEnabled(true); 
+        jTxtCodigo.setText("");
+        jTxtVenda.setText("");
+        jTxtCompra.setText("");
+        jTxtNome.setText("");
+        jTxtQuantidade.setText("");
+        jTxtID.setText("");
     }//GEN-LAST:event_jBtnNovoActionPerformed
 
     private void jBtnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPesquisarActionPerformed
@@ -371,13 +376,15 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtCompra.setText("");
         jTxtNome.setText("");
         jTxtQuantidade.setText("");
+        jTxtID.setText("");
         jBtnCadastrar.setEnabled(false);
         jBtnCancelar.setEnabled(false);
         jTxtCodigo.setEnabled(false);
         jTxtVenda.setEnabled(false);
         jTxtCompra.setEnabled(false);
-        jTxtNome.setEnabled(false);
         jTxtQuantidade.setEnabled(false);
+        jBtnEditar.setEnabled(false);
+        jBtnExcluir.setEnabled(false);
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
     private void jBtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEditarActionPerformed
@@ -391,7 +398,6 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtQuantidade.setEnabled(true);
         jBtnEditar.setEnabled(false);
         jBtnExcluir.setEnabled(false);
-        
     }//GEN-LAST:event_jBtnEditarActionPerformed
 
     private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
@@ -403,7 +409,55 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         }   
     }//GEN-LAST:event_jBtnExcluirActionPerformed
 
+    private void jTProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProdutosMouseClicked
+        String nome_produto = ""+jTProdutos.getValueAt(jTProdutos.getSelectedRow(),0);
+        conex.conexao();
+        conex.executaSql("select *from produtos where nome_produto='"+nome_produto+"'");
+        try {
+            conex.rs.first();
+            jTxtID.setText(String.valueOf(conex.rs.getInt("id_produto")));
+            jTxtNome.setText(conex.rs.getString("nome_produto"));
+            jTxtCodigo.setText(String.valueOf(conex.rs.getInt("codigo_produto")));
+            jTxtCompra.setText(String.valueOf(conex.rs.getDouble("p_entrada_produto")));
+            jTxtVenda.setText(String.valueOf(conex.rs.getDouble("p_saida_produto")));
+            jTxtQuantidade.setText(String.valueOf(conex.rs.getInt("quantidade_produto")));
+        }catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao selecionar dados!\n"+ex.getMessage());
+        }
+        conex.desconecta();
+        jBtnEditar.setEnabled(true);
+        jBtnExcluir.setEnabled(true);
+    }//GEN-LAST:event_jTProdutosMouseClicked
 
+    public void preencherTabela(String Sql){
+        ArrayList dados = new ArrayList();
+        String[] colunas = new String[]{"Nome","Preç. Entrada","Preç. Saída","Qntd."};
+        conex.conexao();
+        conex.executaSql(Sql);
+        
+        try{
+            conex.rs.first();
+            do{
+                dados.add(new Object[]{conex.rs.getString("nome_produto"),conex.rs.getDouble("p_entrada_produto"),conex.rs.getDouble("p_saida_produto"),conex.rs.getInt("quantidade_produto")});
+            }while(conex.rs.next());
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao preencher o Array: \n"+ex.getMessage());
+        }
+        ModeloTabela modelo = new ModeloTabela(dados, colunas);
+        jTProdutos.setModel(modelo);
+        jTProdutos.getColumnModel().getColumn(0).setPreferredWidth(180);
+        jTProdutos.getColumnModel().getColumn(0).setResizable(false);
+        jTProdutos.getColumnModel().getColumn(1).setPreferredWidth(92);
+        jTProdutos.getColumnModel().getColumn(1).setResizable(false);
+        jTProdutos.getColumnModel().getColumn(2).setPreferredWidth(92);
+        jTProdutos.getColumnModel().getColumn(2).setResizable(false);
+        jTProdutos.getColumnModel().getColumn(3).setPreferredWidth(92);
+        jTProdutos.getColumnModel().getColumn(3).setResizable(false);
+        jTProdutos.getTableHeader().setReorderingAllowed(false);
+        jTProdutos.setAutoResizeMode(jTProdutos.AUTO_RESIZE_OFF);
+        jTProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        conex.desconecta();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCadastrar;
     private javax.swing.JButton jBtnCancelar;

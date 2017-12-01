@@ -27,7 +27,7 @@ public class ConexaoBD {
         System.setProperty("jdbc.Drivers", driver);
         try {
             con = DriverManager.getConnection(caminho, usuario, senha);
-            JOptionPane.showMessageDialog(null, "Conexão efetuada com sucesso!");
+            //JOptionPane.showMessageDialog(null, "Conexão efetuada com sucesso!"); //Retorna caso conectado.
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao se conectar com o banco de dados:\n "+ex.getMessage());
         }
@@ -35,7 +35,7 @@ public class ConexaoBD {
     
     public void executaSql(String sql){
         try {
-            stm = con.createStatement(rs.TYPE_SCROLL_INSENSITIVE,rs.CONCUR_READ_ONLY); //não importa maiusculo ou minusculo, e percorre do inicio ao fim e do inicio ao fim
+            stm = con.createStatement(rs.TYPE_SCROLL_INSENSITIVE, rs.CONCUR_READ_ONLY); //não importa maiusculo ou minusculo, e percorre do inicio ao fim e do inicio ao fim
             rs = stm.executeQuery(sql);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao executar comando SQL:\n "+ex.getMessage());
@@ -47,7 +47,7 @@ public class ConexaoBD {
     public void desconecta(){
         try {
             con.close();
-            JOptionPane.showMessageDialog(null, "Desconectado com sucesso!");
+            //JOptionPane.showMessageDialog(null, "Desconectado com sucesso!"); retorna caso desconectado
         } catch (SQLException ex) {
             Logger.getLogger(ConexaoBD.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Desconexão Falhou:\n"+ex.getMessage());

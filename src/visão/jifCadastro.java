@@ -7,10 +7,7 @@ package visão;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import modeloDao.DaoProduto;
 import modeloConection.ConexaoBD;
@@ -356,18 +353,32 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBtnNovoActionPerformed
 
     private void jBtnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPesquisarActionPerformed
-        mod.setPesquisa(jTxtNome.getText());
-        BeansProduto model = control.buscaProduto(mod);
-        jTxtID.setText(String.valueOf(model.getId()));
-        jTxtNome.setText(model.getNome());
-        jTxtCodigo.setText(String.valueOf(model.getCodigo()));
-        jTxtCompra.setText(String.valueOf(model.getpCompra()));
-        jTxtVenda.setText(String.valueOf(model.getpVenda()));
-        jTxtQuantidade.setText(String.valueOf(model.getQuantidade()));
-        jBtnEditar.setEnabled(true);
-        jBtnExcluir.setEnabled(true);
-        jBtnCancelar.setEnabled(true);
-        mod.setAuxiliar(Integer.parseInt(jTxtCodigo.getText()));
+        ArrayList dados = new ArrayList();
+        String[] colunas = new String[]{"Nome","Preç. Entrada","Preç. Saída","Qntd."};
+        conex.conexao();
+        conex.executaSql("select *from produtos where nome_produto like'%"+jTxtNome.getText()+"%'");
+        try{
+            conex.rs.first();
+            do{
+                dados.add(new Object[]{conex.rs.getString("nome_produto"),conex.rs.getDouble("p_entrada_produto"),conex.rs.getDouble("p_saida_produto"),conex.rs.getInt("quantidade_produto")});
+            }while(conex.rs.next());
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao preencher o Array: \n"+ex.getMessage());
+        }
+        ModeloTabela modelo = new ModeloTabela(dados, colunas);
+        jTProdutos.setModel(modelo);
+        jTProdutos.getColumnModel().getColumn(0).setPreferredWidth(180);
+        jTProdutos.getColumnModel().getColumn(0).setResizable(false);
+        jTProdutos.getColumnModel().getColumn(1).setPreferredWidth(92);
+        jTProdutos.getColumnModel().getColumn(1).setResizable(false);
+        jTProdutos.getColumnModel().getColumn(2).setPreferredWidth(92);
+        jTProdutos.getColumnModel().getColumn(2).setResizable(false);
+        jTProdutos.getColumnModel().getColumn(3).setPreferredWidth(92);
+        jTProdutos.getColumnModel().getColumn(3).setResizable(false);
+        jTProdutos.getTableHeader().setReorderingAllowed(false);
+        jTProdutos.setAutoResizeMode(jTProdutos.AUTO_RESIZE_OFF);
+        jTProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        conex.desconecta();
     }//GEN-LAST:event_jBtnPesquisarActionPerformed
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
@@ -401,7 +412,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBtnEditarActionPerformed
 
     private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
-        int resposta=0;
+        int resposta;
         resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
         if(resposta == JOptionPane.YES_OPTION){
             mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
@@ -429,7 +440,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jBtnExcluir.setEnabled(true);
     }//GEN-LAST:event_jTProdutosMouseClicked
 
-    public void preencherTabela(String Sql){
+    private void preencherTabela(String Sql){
         ArrayList dados = new ArrayList();
         String[] colunas = new String[]{"Nome","Preç. Entrada","Preç. Saída","Qntd."};
         conex.conexao();

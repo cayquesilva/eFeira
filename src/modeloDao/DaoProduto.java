@@ -76,7 +76,7 @@ public class DaoProduto {
     }
     
     
-    public BeansProduto buscaProduto(BeansProduto mod){
+    /*public BeansProduto buscaProduto(BeansProduto mod){
         conex.conexao();
         conex.executaSql("select *from produtos where nome_produto like'%"+mod.getPesquisa()+"%'");
         try {
@@ -92,7 +92,7 @@ public class DaoProduto {
         }
         conex.desconecta();
         return mod;
-    }
+    }*/
 
 
 }

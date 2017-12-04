@@ -106,7 +106,6 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtVenda.setEnabled(false);
 
         jTxtID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTxtID.setText("000");
         jTxtID.setEnabled(false);
 
         jBtnNovo.setText("Novo");
@@ -291,33 +290,28 @@ public class jifCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBtnSairActionPerformed
 
     private void jBtnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCadastrarActionPerformed
-        if(flag==1){
-        mod.setNome(jTxtNome.getText());
-        mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
-        mod.setpCompra(Double.parseDouble(jTxtCompra.getText()));
-        mod.setpVenda(Double.parseDouble(jTxtVenda.getText()));
-        mod.setQuantidade(Integer.parseInt(jTxtQuantidade.getText()));
-        control.Salvar(mod);
-        jTxtCodigo.setText("");
-        jTxtVenda.setText("");
-        jTxtCompra.setText("");
-        jTxtNome.setText("");
-        jTxtQuantidade.setText("");
-        jBtnCadastrar.setEnabled(false);
-        jBtnCancelar.setEnabled(false);
-        jBtnEditar.setEnabled(false);
-        jTxtVenda.setEnabled(false);
-        jTxtCompra.setEnabled(false);
-        jTxtCodigo.setEnabled(false);
-        jTxtQuantidade.setEnabled(false);
-        preencherTabela("select *from produtos order by nome_produto");
-        }else{
+        if(jTxtNome.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha o 'Nome' para continuar");
+            jTxtNome.requestFocus();
+        }else if(jTxtCodigo.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha o 'Código' para continuar");
+            jTxtCodigo.requestFocus();
+        }else if(jTxtQuantidade.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha a 'Quantidade' para continuar");
+            jTxtQuantidade.requestFocus();
+        }else if(jTxtCompra.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha o 'Preço de compra' para continuar");
+            jTxtCompra.requestFocus();
+        }else if(jTxtVenda.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha o 'Preço de venda' para continuar");
+            jTxtVenda.requestFocus();
+        }else if(flag==1){
             mod.setNome(jTxtNome.getText());
             mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
             mod.setpCompra(Double.parseDouble(jTxtCompra.getText()));
             mod.setpVenda(Double.parseDouble(jTxtVenda.getText()));
             mod.setQuantidade(Integer.parseInt(jTxtQuantidade.getText()));
-            control.Editar(mod);
+            control.Salvar(mod);
             jTxtCodigo.setText("");
             jTxtVenda.setText("");
             jTxtCompra.setText("");
@@ -332,7 +326,28 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             jTxtCodigo.setEnabled(false);
             jTxtQuantidade.setEnabled(false);
             preencherTabela("select *from produtos order by nome_produto");
-        }
+            }else{
+                mod.setNome(jTxtNome.getText());
+                mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
+                mod.setpCompra(Double.parseDouble(jTxtCompra.getText()));
+                mod.setpVenda(Double.parseDouble(jTxtVenda.getText()));
+                mod.setQuantidade(Integer.parseInt(jTxtQuantidade.getText()));
+                control.Editar(mod);
+                jTxtCodigo.setText("");
+                jTxtVenda.setText("");
+                jTxtCompra.setText("");
+                jTxtNome.setText("");
+                jTxtQuantidade.setText("");
+                jTxtID.setText("");
+                jBtnCadastrar.setEnabled(false);
+                jBtnCancelar.setEnabled(false);
+                jBtnEditar.setEnabled(false);
+                jTxtVenda.setEnabled(false);
+                jTxtCompra.setEnabled(false);
+                jTxtCodigo.setEnabled(false);
+                jTxtQuantidade.setEnabled(false);
+                preencherTabela("select *from produtos order by nome_produto");
+            }
     }//GEN-LAST:event_jBtnCadastrarActionPerformed
 
     private void jBtnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnNovoActionPerformed
@@ -409,6 +424,8 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jTxtQuantidade.setEnabled(true);
         jBtnEditar.setEnabled(false);
         jBtnExcluir.setEnabled(false);
+        jBtnCancelar.setEnabled(true);
+        mod.setAuxiliar(Integer.parseInt(jTxtCodigo.getText()));
     }//GEN-LAST:event_jBtnEditarActionPerformed
 
     private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
@@ -418,6 +435,7 @@ public class jifCadastro extends javax.swing.JInternalFrame {
             mod.setCodigo(Integer.parseInt(jTxtCodigo.getText()));
             control.Excluir(mod);
         }   
+        preencherTabela("select *from produtos order by nome_produto");
     }//GEN-LAST:event_jBtnExcluirActionPerformed
 
     private void jTProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProdutosMouseClicked
@@ -445,7 +463,6 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         String[] colunas = new String[]{"Nome","Preç. Entrada","Preç. Saída","Qntd."};
         conex.conexao();
         conex.executaSql(Sql);
-        
         try{
             conex.rs.first();
             do{

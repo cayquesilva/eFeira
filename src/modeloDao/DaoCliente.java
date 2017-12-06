@@ -27,7 +27,7 @@ public class DaoCliente {
         try {
             PreparedStatement pst = conex.con.prepareStatement("insert into clientes (nome_cliente,cpf_cliente) values(?,?)");
             pst.setString(1, mod.getNome());
-            pst.setString(1, mod.getCpf());
+            pst.setString(2, mod.getCpf());
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!");
         } catch (SQLException ex) {

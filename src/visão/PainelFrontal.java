@@ -50,7 +50,7 @@ public class PainelFrontal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuTopoCadastros = new javax.swing.JMenu();
         jMenuProdutos = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        jMenuClientes = new javax.swing.JMenuItem();
         jMenuTopoRelatorios = new javax.swing.JMenu();
         JMenuRelProdutos = new javax.swing.JMenuItem();
         jMenuTopoSair = new javax.swing.JMenu();
@@ -82,7 +82,7 @@ public class PainelFrontal extends javax.swing.JFrame {
             .addGap(0, 518, Short.MAX_VALUE)
         );
 
-        jMenuTopoCadastros.setText("Administrar Estoque");
+        jMenuTopoCadastros.setText("Administrar");
 
         jMenuProdutos.setText("Produtos");
         jMenuProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -97,10 +97,15 @@ public class PainelFrontal extends javax.swing.JFrame {
         });
         jMenuTopoCadastros.add(jMenuProdutos);
 
-        jMenuBar1.add(jMenuTopoCadastros);
+        jMenuClientes.setText("Clientes");
+        jMenuClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuClientesActionPerformed(evt);
+            }
+        });
+        jMenuTopoCadastros.add(jMenuClientes);
 
-        jMenu1.setText("Cadastrar Cliente");
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenuTopoCadastros);
 
         jMenuTopoRelatorios.setText("Ver produtos");
 
@@ -167,6 +172,12 @@ public class PainelFrontal extends javax.swing.JFrame {
         obj.setVisible(true);
     }//GEN-LAST:event_JMenuRelProdutosActionPerformed
 
+    private void jMenuClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuClientesActionPerformed
+        jifCliente cli = new jifCliente();
+        getJdpPrincipal().add(cli);
+        cli.setVisible(true);
+    }//GEN-LAST:event_jMenuClientesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -202,8 +213,8 @@ public class PainelFrontal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane JdpPrincipal;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuClientes;
     private javax.swing.JMenuItem jMenuProdutos;
     private javax.swing.JMenu jMenuTopoCadastros;
     private javax.swing.JMenu jMenuTopoRelatorios;

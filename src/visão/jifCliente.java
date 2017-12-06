@@ -54,7 +54,7 @@ public class jifCliente extends javax.swing.JInternalFrame {
         jBtnPesquisar = new javax.swing.JButton();
         jBtnCancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTxtID = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -106,6 +106,11 @@ public class jifCliente extends javax.swing.JInternalFrame {
 
         jBtnExcluir.setText("Excluir");
         jBtnExcluir.setEnabled(false);
+        jBtnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnExcluirActionPerformed(evt);
+            }
+        });
 
         jBtnSair.setText("Sair");
         jBtnSair.addActionListener(new java.awt.event.ActionListener() {
@@ -131,7 +136,7 @@ public class jifCliente extends javax.swing.JInternalFrame {
 
         jLabel2.setText("ID:");
 
-        jTextField1.setEnabled(false);
+        jTxtID.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -150,7 +155,7 @@ public class jifCliente extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTxtID, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -161,11 +166,11 @@ public class jifCliente extends javax.swing.JInternalFrame {
                                 .addGap(2, 2, 2)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTxtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jBtnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jBtnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jBtnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTxtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -175,7 +180,7 @@ public class jifCliente extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnNovo)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTxtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -216,6 +221,11 @@ public class jifCliente extends javax.swing.JInternalFrame {
 
             }
         ));
+        jTClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTClientes);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -302,6 +312,7 @@ public class jifCliente extends javax.swing.JInternalFrame {
         jBtnEditar.setEnabled(false);
         jBtnExcluir.setEnabled(false);
         jBtnCancelar.setEnabled(true);
+        jTxtCPF.setEditable(true);
         mod.setAuxiliar(jTxtCPF.getText());
     }//GEN-LAST:event_jBtnEditarActionPerformed
 
@@ -354,6 +365,38 @@ public class jifCliente extends javax.swing.JInternalFrame {
         jTxtNome.setText("");
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
+    private void jTClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTClientesMouseClicked
+        String nome_cliente = ""+jTClientes.getValueAt(jTClientes.getSelectedRow(),0);
+        conex.conexao();
+        conex.executaSql("select *from clientes where nome_cliente='"+nome_cliente+"'");
+        try {
+            conex.rs.first();
+            jTxtID.setText(String.valueOf(conex.rs.getInt("id_cliente")));
+            jTxtNome.setText(conex.rs.getString("nome_cliente"));
+            jTxtCPF.setText(conex.rs.getString("cpf_cliente"));
+        }catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao selecionar dados!\n"+ex.getMessage());
+        }
+        conex.desconecta();
+        jBtnEditar.setEnabled(true);
+        jBtnExcluir.setEnabled(true);
+    }//GEN-LAST:event_jTClientesMouseClicked
+
+    private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
+        int resposta;
+        resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
+        if(resposta == JOptionPane.YES_OPTION){
+            mod.setCpf((jTxtCPF.getText()));
+            control.Excluir(mod);
+        }   
+        preencherTabela("select *from clientes order by nome_cliente");
+        jBtnExcluir.setEnabled(false);
+        jBtnEditar.setEnabled(false);
+        jTxtNome.setText("");
+        jTxtID.setText("");
+        jTxtCPF.setText("");
+    }//GEN-LAST:event_jBtnExcluirActionPerformed
+
     private void preencherTabela(String Sql){
         ArrayList dados = new ArrayList();
         String[] colunas = new String[]{"Nome","CPF"};
@@ -395,8 +438,8 @@ public class jifCliente extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTClientes;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTxtCPF;
+    private javax.swing.JTextField jTxtID;
     private javax.swing.JTextField jTxtNome;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,6 +13,7 @@ public class BeansVenda {
     private double subTotal;
     private int id_produto;
     private int id_cliente;
+    private int quant_produto;
     private int Auxiliar;
 
     public double getSubTotal() {
@@ -46,6 +47,14 @@ public class BeansVenda {
 
     public void setAuxiliar(int Auxiliar) {
         this.Auxiliar = Auxiliar;
+    }
+
+    public int getQuant_produto() {
+        return quant_produto;
+    }
+
+    public void setQuant_produto(int quant_produto) {
+        this.quant_produto = quant_produto;
     }
     
 }

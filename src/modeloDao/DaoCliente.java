@@ -66,23 +66,4 @@ public class DaoCliente {
         conex.desconecta();
     }
     
-    
-    /*public BeansProduto buscaProduto(BeansProduto mod){
-        conex.conexao();
-        conex.executaSql("select *from produtos where nome_produto like'%"+mod.getPesquisa()+"%'");
-        try {
-            conex.rs.first();
-            mod.setId(conex.rs.getInt("id_produto"));
-            mod.setCodigo(conex.rs.getInt("codigo_produto"));
-            mod.setNome(conex.rs.getString("nome_produto"));
-            mod.setpCompra(conex.rs.getDouble("p_entrada_produto"));
-            mod.setpVenda(conex.rs.getDouble("p_saida_produto"));
-            mod.setQuantidade(conex.rs.getInt("quantidade_produto"));
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar o produto:\n"+ex.getMessage());
-        }
-        conex.desconecta();
-        return mod;
-    }*/
-
 }

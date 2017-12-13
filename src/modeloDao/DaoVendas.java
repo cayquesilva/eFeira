@@ -25,9 +25,10 @@ public class DaoVendas {
     public void Salvar(BeansVenda mod){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("insert into vendas (id_produto,id_cliente) values(?,?)");
+            PreparedStatement pst = conex.con.prepareStatement("insert into produtos_vendas (id_produtos,id_cliente,quantidade_produto) values(?,?,?)");
             pst.setInt(1, mod.getId_produto());
             pst.setInt(2, mod.getId_cliente());
+            pst.setInt(3, mod.getQuant_produto());
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!");
         } catch (SQLException ex) {
@@ -40,7 +41,7 @@ public class DaoVendas {
     public void Excluir(BeansVenda mod){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("delete from vendas where id_produto=?");
+            PreparedStatement pst = conex.con.prepareStatement("delete from produtos_vendas where id_produtos=?");
             pst.setInt(1, mod.getId_produto());
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados excluidos com sucesso!");
@@ -54,10 +55,11 @@ public class DaoVendas {
     public void Editar(BeansVenda mod){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("update vendas set id_produto=?,id_cliente=?, where id_produto=?");
+            PreparedStatement pst = conex.con.prepareStatement("update produtos_vendas set id_produtos=?,id_cliente=?,quantidade_produto=? where id_produtos=?");
             pst.setInt(1, mod.getId_produto());
             pst.setInt(2, mod.getId_cliente());
-            pst.setInt(3, mod.getAuxiliar());
+            pst.setInt(3, mod.getQuant_produto());
+            pst.setInt(4, mod.getAuxiliar());
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados alterados com sucesso!");
 
@@ -71,7 +73,7 @@ public class DaoVendas {
     public void Finalizar(BeansVenda mod){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("insert into finalizadas (clientes,subtotal) values(?,?)");
+            PreparedStatement pst = conex.con.prepareStatement("insert into vendas_finalizadas (clientes,subtotal) values(?,?)");
             pst.setInt(1, mod.getId_cliente());
             pst.setDouble(2,mod.getSubTotal());
             pst.execute();

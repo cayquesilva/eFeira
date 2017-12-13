@@ -14,6 +14,7 @@ import modeloBeans.BeansVenda;
 import modeloBeans.ModeloTabela;
 import modeloConection.ConexaoBD;
 import modeloDao.DaoProduto;
+import modeloDao.DaoVendas;
 
 
 /**
@@ -26,10 +27,14 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
     BeansVenda modd = new BeansVenda();
     ConexaoBD conex = new ConexaoBD();
     DaoProduto control = new DaoProduto();
+    DaoVendas control2 = new DaoVendas();
+    String auxiliar,auxiliar2;
+    int op;
     
     public jifComprarProdutos() {
         initComponents();
         preencherTabela("select *from produtos order by nome_produto");
+        PreencherCbox();
     }
 
     /**
@@ -54,9 +59,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         jTbProdutos1 = new javax.swing.JTable();
         jBtnAddCarrinho = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLblCliente = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLblID = new javax.swing.JLabel();
+        jCbCliente = new javax.swing.JComboBox<>();
 
         setTitle("eFeira - Compra de produtos");
 
@@ -160,19 +163,33 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel1.setText("Cliente:");
+        jLabel1.setText("Cliente em atendimento: ");
 
-        jLblCliente.setText("jLabel2");
-
-        jLabel2.setText("ID:");
-
-        jLblID.setText("jLabel3");
+        jCbCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCbClienteItemStateChanged(evt);
+            }
+        });
+        jCbCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCbClienteMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jCbClienteMouseReleased(evt);
+            }
+        });
+        jCbCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCbClienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jBtnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -182,26 +199,20 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(52, 52, 52)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLblCliente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLblID)
-                .addGap(33, 33, 33))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLblCliente)
-                    .addComponent(jLabel2)
-                    .addComponent(jLblID))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                    .addComponent(jCbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -214,24 +225,46 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnAddCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAddCarrinhoActionPerformed
-        String id_cliente = "2";
-        preencherTabela2("select nome_produto.produtos, p_saida_produto.produtos,quantidade_produto.produtos from vendas where id_cliente like '%"+id_cliente+"%'");
+        String id_cliente = PegarID();
+        modd.setId_cliente(Integer.parseInt(id_cliente));
+        op = Integer.parseInt(JOptionPane.showInputDialog(null, "Quantas unidades você deseja adicionar? "));
+        modd.setId_produto(Integer.parseInt(PegarIDProduto()));
+        modd.setQuant_produto(op);
+        control2.Salvar(modd);
+        preencherTabela2("select produtos.nome_produto, produtos.p_saida_produto,produtos.quantidade_produto,produtos_vendas.quantidade_produto from produtos,produtos_vendas where produtos_vendas.id_cliente like '%"+id_cliente+"%' and produtos_vendas.id_produtos = produtos.id_produto");
+
     }//GEN-LAST:event_jBtnAddCarrinhoActionPerformed
 
     private void jBtnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSairActionPerformed
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jBtnSairActionPerformed
+
+    private void jCbClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbClienteActionPerformed
+        
+    }//GEN-LAST:event_jCbClienteActionPerformed
+
+    private void jCbClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCbClienteMouseClicked
+
+    }//GEN-LAST:event_jCbClienteMouseClicked
+
+    private void jCbClienteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCbClienteMouseReleased
+        
+    }//GEN-LAST:event_jCbClienteMouseReleased
+
+    private void jCbClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCbClienteItemStateChanged
+
+    }//GEN-LAST:event_jCbClienteItemStateChanged
     
     private void preencherTabela2(String Sql){
         ArrayList dados = new ArrayList();
-        String[] colunas = new String[]{"Nome","Preço","Qntd."};
+        String[] colunas = new String[]{"Nome","Valor Und.","Qntd.","Valor Total"};
         conex.conexao();
         conex.executaSql(Sql);
         try{
             conex.rs.first();
             do{
-                dados.add(new Object[]{conex.rs.getString("nome_produto"),conex.rs.getDouble("p_saida_produto"),conex.rs.getInt("quantidade_produto")});
+            dados.add(new Object[]{conex.rs.getString("produtos.nome_produto"),conex.rs.getDouble("produtos.p_saida_produto"),conex.rs.getInt("produtos_vendas.quantidade_produto"),(conex.rs.getInt("produtos_vendas.quantidade_produto")*conex.rs.getDouble("produtos.p_saida_produto"))});
             }while(conex.rs.next());
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(rootPane, "Erro ao preencher o Array: \n"+ex.getMessage());
@@ -240,10 +273,12 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         jTProdutos2.setModel(modelo);
         jTProdutos2.getColumnModel().getColumn(0).setPreferredWidth(180);
         jTProdutos2.getColumnModel().getColumn(0).setResizable(false);
-        jTProdutos2.getColumnModel().getColumn(1).setPreferredWidth(92);
+        jTProdutos2.getColumnModel().getColumn(1).setPreferredWidth(93);
         jTProdutos2.getColumnModel().getColumn(1).setResizable(false);
-        jTProdutos2.getColumnModel().getColumn(2).setPreferredWidth(92);
+        jTProdutos2.getColumnModel().getColumn(2).setPreferredWidth(45);
         jTProdutos2.getColumnModel().getColumn(2).setResizable(false);
+        jTProdutos2.getColumnModel().getColumn(3).setPreferredWidth(93);
+        jTProdutos2.getColumnModel().getColumn(3).setResizable(false);
         jTProdutos2.getTableHeader().setReorderingAllowed(false);
         jTProdutos2.setAutoResizeMode(jTProdutos2.AUTO_RESIZE_OFF);
         jTProdutos2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -274,16 +309,57 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         jTbProdutos1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         conex.desconecta();
     }
+    
+    public void PreencherCbox(){
+        conex.conexao();
+        conex.executaSql("select *from clientes order by nome_cliente");
+        try {
+            conex.rs.first();
+            jCbCliente.removeAllItems();
+            do{
+                jCbCliente.addItem(conex.rs.getString("nome_cliente")); 
+            }while(conex.rs.next());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao preencher opções de clientes");
+        }
+        conex.desconecta();
+    }
+    
+    public String PegarID(){
+        conex.conexao();
+        auxiliar = (String)jCbCliente.getSelectedItem();
+        conex.executaSql("select *from clientes where nome_cliente like'%"+auxiliar+"%'");
+        try {
+            conex.rs.first();
+            auxiliar2 = (String.valueOf(conex.rs.getInt("id_cliente")));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o id do cliente!");
+        }
+        conex.desconecta();
+        return auxiliar2;
+    }
+    
+    public String PegarIDProduto(){
+        conex.conexao();
+        conex.executaSql("select *from produtos where nome_produto like'%"+jTbProdutos1.getValueAt(jTbProdutos1.getSelectedRow(), 0)+"%'");
+        try {
+            conex.rs.first();
+            auxiliar = (String.valueOf(conex.rs.getInt("id_produto")));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o id do cliente!");
+        }
+        conex.desconecta();
+        return auxiliar;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnAddCarrinho;
     private javax.swing.JButton jBtnFinalCompra;
     private javax.swing.JButton jBtnSair;
+    private javax.swing.JComboBox<String> jCbCliente;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLblCliente;
-    private javax.swing.JLabel jLblID;
     private javax.swing.JLabel jLblTotal;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

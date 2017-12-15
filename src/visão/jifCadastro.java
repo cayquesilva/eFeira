@@ -107,6 +107,11 @@ public class jifCadastro extends javax.swing.JInternalFrame {
 
         jTxtID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTxtID.setEnabled(false);
+        jTxtID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtIDActionPerformed(evt);
+            }
+        });
 
         jBtnNovo.setText("Novo");
         jBtnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -457,6 +462,10 @@ public class jifCadastro extends javax.swing.JInternalFrame {
         jBtnEditar.setEnabled(true);
         jBtnExcluir.setEnabled(true);
     }//GEN-LAST:event_jTProdutosMouseClicked
+
+    private void jTxtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTxtIDActionPerformed
 
     private void preencherTabela(String Sql){
         ArrayList dados = new ArrayList();

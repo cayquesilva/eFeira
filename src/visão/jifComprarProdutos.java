@@ -28,13 +28,17 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
     ConexaoBD conex = new ConexaoBD();
     DaoProduto control = new DaoProduto();
     DaoVendas control2 = new DaoVendas();
-    String auxiliar,auxiliar2;
+    String auxiliar,auxiliar2,auxiliar3;
     int op;
+    private double aux,total=0;
     
     public jifComprarProdutos() {
         initComponents();
         preencherTabela("select *from produtos order by nome_produto");
         PreencherCbox();
+        modd.setId_cliente(1);
+        modd.setSubTotal(0.0);
+        control2.AbrirVenda(modd);
     }
 
     /**
@@ -227,12 +231,17 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
     private void jBtnAddCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAddCarrinhoActionPerformed
         String id_cliente = PegarID();
         modd.setId_cliente(Integer.parseInt(id_cliente));
-        op = Integer.parseInt(JOptionPane.showInputDialog(null, "Quantas unidades você deseja adicionar? "));
         modd.setId_produto(Integer.parseInt(PegarIDProduto()));
+        //modd.setId_venda(PegarIDVenda(id_cliente));
+        op = Integer.parseInt(JOptionPane.showInputDialog(null, "Quantas unidades você deseja adicionar? "));
         modd.setQuant_produto(op);
+        modd.setSubTotal(PegarPrecoProduto()*op);
         control2.Salvar(modd);
+        modd.setAuxiliar(Integer.parseInt(id_cliente));
+        //modd.setValorTotal(PegarTotal());
+        control2.Finalizar(modd);
         preencherTabela2("select produtos.nome_produto, produtos.p_saida_produto,produtos.quantidade_produto,produtos_vendas.quantidade_produto from produtos,produtos_vendas where produtos_vendas.id_cliente like '%"+id_cliente+"%' and produtos_vendas.id_produtos = produtos.id_produto");
-
+        jLblTotal.setText(String.valueOf(PegarTotal()));
     }//GEN-LAST:event_jBtnAddCarrinhoActionPerformed
 
     private void jBtnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSairActionPerformed
@@ -320,7 +329,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
                 jCbCliente.addItem(conex.rs.getString("nome_cliente")); 
             }while(conex.rs.next());
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao preencher opções de clientes");
+            JOptionPane.showMessageDialog(null, "Erro ao preencher opções de clientes"+ex.getMessage());
         }
         conex.desconecta();
     }
@@ -333,7 +342,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
             conex.rs.first();
             auxiliar2 = (String.valueOf(conex.rs.getInt("id_cliente")));
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o id do cliente!");
+            JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o id do cliente!"+ex.getMessage());
         }
         conex.desconecta();
         return auxiliar2;
@@ -346,11 +355,52 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
             conex.rs.first();
             auxiliar = (String.valueOf(conex.rs.getInt("id_produto")));
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o id do cliente!");
+            JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o id do produto!"+ex.getMessage());
         }
         conex.desconecta();
         return auxiliar;
     }
+    
+    public String PegarIDVenda(String id){
+        conex.conexao();
+        conex.executaSql("select id from vendas_finalizadas where clientes like '%"+id+"%'");
+        try {
+            conex.rs.first();
+            auxiliar3 = (String.valueOf(conex.rs.getInt("id")));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o id da venda!"+ex.getMessage());
+        }
+        conex.desconecta();
+        return auxiliar3;
+    }
+    
+    public Double PegarPrecoProduto(){
+        conex.conexao();
+        conex.executaSql("select *from produtos where nome_produto like'%"+jTbProdutos1.getValueAt(jTbProdutos1.getSelectedRow(), 0)+"%'");
+        try {
+            conex.rs.first();
+            aux = conex.rs.getDouble("p_saida_produto");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o preço do produto!"+ex.getMessage());
+        }
+        conex.desconecta();
+        return aux;
+    }
+    
+    public Double PegarTotal(){
+        conex.conexao();
+        conex.executaSql("select sum(valor_final) as soma from produtos_vendas,vendas_finalizadas where produtos_vendas.id_cliente = vendas_finalizadas.clientes");
+        try {
+            conex.rs.first();
+            total= conex.rs.getDouble("soma");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel calcular o preço total da venda!"+ex.getMessage());
+        }
+        conex.desconecta();
+        return total;
+    }
+    
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnAddCarrinho;

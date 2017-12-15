@@ -15,6 +15,11 @@ public class BeansVenda {
     private int id_cliente;
     private int quant_produto;
     private int Auxiliar;
+    private String id_venda;
+    private double valorTotal;
+    
+    
+    
 
     public double getSubTotal() {
         return subTotal;
@@ -55,6 +60,22 @@ public class BeansVenda {
 
     public void setQuant_produto(int quant_produto) {
         this.quant_produto = quant_produto;
+    }
+
+    public String getId_venda() {
+        return id_venda;
+    }
+
+    public void setId_venda(String id_venda) {
+        this.id_venda = id_venda;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
     }
     
 }

@@ -36,11 +36,6 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         initComponents();
         preencherTabela("select *from produtos order by nome_produto");
         PreencherCbox();
-        id_cliente = PegarID();
-        modd.setId_cliente(id_cliente);
-        control2.AbrirVenda(modd);
-        modd.setId_venda(PegarIDVenda("select id from vendas_finalizadas where clientes like "+id_cliente+""));
-        control2.AbrirVenda2(modd);
     }
 
     /**
@@ -82,6 +77,11 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTProdutos2);
 
         jBtnFinalCompra.setText("Finalizar compra");
+        jBtnFinalCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnFinalCompraActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setText("Valor Total:");
@@ -231,23 +231,14 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnAddCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAddCarrinhoActionPerformed
-        id_cliente2 = PegarID();
-        modd.setId_cliente(id_cliente2);
-        if(op==1){
-            id_venda = PegarIDVenda("select id from vendas_finalizadas where clientes like "+id_cliente2+"");
-        }else{
-            id_venda = PegarIDVenda("select id from vendas_finalizadas where clientes like "+id_cliente+"");
-        }
-        modd.setId_venda(id_venda);
-        control2.SalvarVendas(modd);
+        id_cliente = PegarID();
+        modd.setId_cliente(id_cliente);
         modd.setId_produto(PegarIDProduto());
         modd.setQuant_produto(Integer.parseInt(JOptionPane.showInputDialog("Quantos produtos desse tipo você quer? ")));
         modd.setSubTotal(modd.getQuant_produto()*PegarPrecoProduto());
-        modd.setAuxiliar(id_venda);
         control2.SalvarProdutos(modd);
-        preencherTabela2("select produtos.nome_produto, produtos.p_saida_produto,produtos.quantidade_produto,produtos_vendas.quantidade_produto from produtos,produtos_vendas where produtos_vendas.id_cliente like "+id_cliente2+" and produtos_vendas.id_produtos = produtos.id_produto");
-        jLblTotal.setText(String.valueOf(PegarTotal()));
-        op=1;
+        preencherTabela2("select produtos.nome_produto, produtos.p_saida_produto,produtos.quantidade_produto,produtos_vendas.quantidade_produto from produtos,produtos_vendas where produtos_vendas.id_cliente like "+id_cliente+" and produtos_vendas.id_venda like 0");
+        jLblTotal.setText(String.valueOf(PegarTotal(id_cliente)));
     }//GEN-LAST:event_jBtnAddCarrinhoActionPerformed
 
     private void jBtnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSairActionPerformed
@@ -270,6 +261,17 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
     private void jCbClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCbClienteItemStateChanged
 
     }//GEN-LAST:event_jCbClienteItemStateChanged
+
+    private void jBtnFinalCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnFinalCompraActionPerformed
+        // TODO add your handling code here:
+        id_cliente = PegarID();
+        modd.setId_cliente(id_cliente);
+        modd.setSubTotal(Double.parseDouble(jLblTotal.getText()));
+        control2.SalvarVendas(modd);
+        id_venda=PegarIDVenda("select id from vendas_finalizadas where clientes like "+id_cliente+" order by id desc");
+        modd.setId_venda(id_venda);
+        control2.AtualizaProdutosVenda(modd);
+    }//GEN-LAST:event_jBtnFinalCompraActionPerformed
     
     private void preencherTabela2(String Sql){
         ArrayList dados = new ArrayList();
@@ -394,9 +396,9 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         return aux;
     }
     
-    public Double PegarTotal(){
+    public Double PegarTotal(int cliente){
         conex.conexao();
-        conex.executaSql("select sum(valor_final) as soma from produtos_vendas,vendas_finalizadas where produtos_vendas.id_cliente = vendas_finalizadas.clientes");
+        conex.executaSql("select sum(valor_final) as soma from produtos_vendas where id_cliente like "+cliente+" and id_venda like 0");
         try {
             conex.rs.first();
             total= conex.rs.getDouble("soma");

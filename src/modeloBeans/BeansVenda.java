@@ -15,7 +15,7 @@ public class BeansVenda {
     private int id_cliente;
     private int quant_produto;
     private int Auxiliar;
-    private String id_venda;
+    private int id_venda;
     private double valorTotal;
     
     
@@ -62,11 +62,11 @@ public class BeansVenda {
         this.quant_produto = quant_produto;
     }
 
-    public String getId_venda() {
+    public int getId_venda() {
         return id_venda;
     }
 
-    public void setId_venda(String id_venda) {
+    public void setId_venda(int id_venda) {
         this.id_venda = id_venda;
     }
 

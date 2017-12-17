@@ -22,17 +22,19 @@ public class DaoProduto {
     
     ConexaoBD conex = new ConexaoBD();
     BeansProduto mod = new BeansProduto();
+    private double total=0;
     
     
     public void Salvar(BeansProduto mod){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("insert into produtos (nome_produto,p_entrada_produto,p_saida_produto,quantidade_produto,codigo_produto) values(?,?,?,?,?)");
+            PreparedStatement pst = conex.con.prepareStatement("insert into produtos (nome_produto,p_entrada_produto,p_saida_produto,quantidade_produto,codigo_produto,total_gasto) values(?,?,?,?,?,?)");
             pst.setString(1, mod.getNome());
             pst.setDouble(2, mod.getpCompra());
             pst.setDouble(3, mod.getpVenda());
             pst.setInt(4, mod.getQuantidade());
             pst.setInt(5, mod.getCodigo());
+            pst.setDouble(6,mod.getpCompra()*mod.getQuantidade());
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!");
         } catch (SQLException ex) {
@@ -59,13 +61,14 @@ public class DaoProduto {
     public void Editar(BeansProduto mod){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("update produtos set nome_produto=?,p_entrada_produto=?,p_saida_produto=?,quantidade_produto=?,codigo_produto=? where codigo_produto=?");
+            PreparedStatement pst = conex.con.prepareStatement("update produtos set nome_produto=?,p_entrada_produto=?,p_saida_produto=?,quantidade_produto=?,codigo_produto=?,total_gasto=? where codigo_produto=?");
             pst.setString(1, mod.getNome());
             pst.setDouble(2, mod.getpCompra());
             pst.setDouble(3, mod.getpVenda());
             pst.setInt(4, mod.getQuantidade());
             pst.setInt(5, mod.getCodigo());
-            pst.setInt(6, mod.getAuxiliar());
+            pst.setDouble(6, mod.getpCompra()*mod.getQuantidade());
+            pst.setInt(7, mod.getAuxiliar());
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados alterados com sucesso!");
 
@@ -76,23 +79,39 @@ public class DaoProduto {
     }
     
     
-    /*public BeansProduto buscaProduto(BeansProduto mod){
+    public Double PegarGastoTotal(){
         conex.conexao();
-        conex.executaSql("select *from produtos where nome_produto like'%"+mod.getPesquisa()+"%'");
+        conex.executaSql("select sum(total_gasto) as soma from produtos");
         try {
             conex.rs.first();
-            mod.setId(conex.rs.getInt("id_produto"));
-            mod.setCodigo(conex.rs.getInt("codigo_produto"));
-            mod.setNome(conex.rs.getString("nome_produto"));
-            mod.setpCompra(conex.rs.getDouble("p_entrada_produto"));
-            mod.setpVenda(conex.rs.getDouble("p_saida_produto"));
-            mod.setQuantidade(conex.rs.getInt("quantidade_produto"));
+            total= conex.rs.getDouble("soma");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar o produto:\n"+ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Não foi possivel calcular o preço total gasto com compras de produtos!\n"+ex.getMessage());
         }
         conex.desconecta();
-        return mod;
-    }*/
+        return total;
+    }
 
+    public Double PegarVendasTotal(){
+        conex.conexao();
+        conex.executaSql("SELECT SUM(valor_final) AS soma FROM produtos_vendas");
+        try {
+            conex.rs.first();
+            total= conex.rs.getDouble("soma");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel calcular o valor final das vendas!\n"+ex.getMessage());
+        }
+        conex.desconecta();
+        return total;
+    }
+    
+    public Double PegarLucroReal(){
+        total = PegarVendasTotal()-PegarGastoTotal();
+        return total;
+    }
 
+    public double PegarLucroPorcento(){
+        total = (PegarLucroReal()/PegarGastoTotal())*100;
+        return total;
+    }
 }

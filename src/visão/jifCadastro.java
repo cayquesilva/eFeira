@@ -30,7 +30,6 @@ public class jifCadastro extends javax.swing.JInternalFrame {
      */
     public jifCadastro() {
         initComponents();
-        preencherTabela("select *from produtos order by nome_produto");
     }
     /**
      * This method is called from within the constructor to initialize the form.

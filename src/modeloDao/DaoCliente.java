@@ -20,6 +20,7 @@ import modeloConection.ConexaoBD;
 public class DaoCliente {
     ConexaoBD conex = new ConexaoBD();
     BeansCliente mod = new BeansCliente();
+    private int contador=0;
     
     
     public void Salvar(BeansCliente mod){
@@ -65,5 +66,21 @@ public class DaoCliente {
         }
         conex.desconecta();
     }
+    
+        public int ContarClientes(){
+        conex.conexao();
+        conex.executaSql("select *from clientes order by nome_cliente");
+        try {
+            conex.rs.first();
+            do{
+                contador++;
+            }while(conex.rs.next());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao contar o numero de clientes! \n"+ex.getMessage());
+        }
+        conex.desconecta();
+        return contador;
+    }
+    
     
 }

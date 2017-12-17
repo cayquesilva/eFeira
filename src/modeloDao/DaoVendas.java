@@ -36,6 +36,18 @@ public class DaoVendas {
         conex.desconecta();
     }
   
+    public void AtualizaProdutosEstoque(BeansVenda mod){
+        conex.conexao();
+        try {
+            PreparedStatement pst = conex.con.prepareStatement("UPDATE produtos p INNER JOIN produtos_vendas pv ON p.`id_produto` = pv.`id_produtos` SET p.`quantidade_produto` = p.`quantidade_produto`- pv.`quantidade_produto` WHERE pv.`id_venda`= ?");
+            pst.setInt(1, mod.getId_venda());
+            pst.execute();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar a quantidade de produtos no estoque:\n"+ex);        
+        }
+        conex.desconecta();
+    }
+    
     public void SalvarProdutos(BeansVenda mod){
         conex.conexao();
         try {
@@ -66,17 +78,17 @@ public class DaoVendas {
         conex.desconecta();
     }
     
-    public void Excluir(BeansVenda mod){
+    public void CompraCanceladaExcluir(){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("delete from produtos_vendas where id_produtos=?");
-            pst.setInt(1, mod.getId_produto());
+            PreparedStatement pst = conex.con.prepareStatement("delete from produtos_vendas where id_venda=?");
+            pst.setInt(1, 0);
             pst.execute();
-            JOptionPane.showMessageDialog(null, "Dados excluidos com sucesso!");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao excluir dados:\n"+ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao excluir a venda cancelada:\n"+ex.getMessage());
         }
         conex.desconecta();
     }
     
+
 }

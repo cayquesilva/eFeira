@@ -29,7 +29,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
     DaoProduto control = new DaoProduto();
     DaoVendas control2 = new DaoVendas();
     String auxiliar;
-    int op=0,auxiliar2,id_cliente,id_venda,id_cliente2;
+    int auxiliar2,id_cliente,id_venda,quantidade,flag=0;
     private double aux,total=0;
     
     public jifComprarProdutos() {
@@ -123,8 +123,8 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLblTotal)
@@ -246,13 +246,14 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
 
     private void jBtnAddCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAddCarrinhoActionPerformed
         id_cliente = PegarID();
-       if(id_cliente==1){
+        if(id_cliente==1){
             JOptionPane.showMessageDialog(null, "Você precisa selecionar um cliente!!!");
             jCbCliente.requestFocus();
         }else{
         modd.setId_cliente(id_cliente);
         modd.setId_produto(PegarIDProduto());
-        modd.setQuant_produto(Integer.parseInt(JOptionPane.showInputDialog("Quantos produtos desse tipo você quer? ")));
+        quantidade = Integer.parseInt(JOptionPane.showInputDialog("Quantos produtos desse tipo você quer? "));
+        modd.setQuant_produto(quantidade);
         modd.setSubTotal(modd.getQuant_produto()*PegarPrecoProduto());
         control2.SalvarProdutos(modd);
         preencherTabela2("SELECT produtos.nome_produto, produtos.p_saida_produto, produtos_vendas.quantidade_produto FROM produtos,produtos_vendas WHERE produtos_vendas.id_cliente = "+id_cliente+" AND produtos_vendas.id_venda = 0 AND produtos.id_produto = produtos_vendas.id_produtos");
@@ -295,6 +296,26 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
             id_venda=PegarIDVenda("select id from vendas_finalizadas where clientes like "+id_cliente+" order by id desc");
             modd.setId_venda(id_venda);
             control2.AtualizaProdutosVenda(modd);
+            control2.AtualizaProdutosEstoque(modd);
+            JOptionPane.showMessageDialog(null, "Sua compra foi finalizada!");
+            jCbCliente.setEnabled(true);
+            jCbCliente.setSelectedIndex(0);
+            jLblTotal.setText("0.00");
+            ArrayList dados = new ArrayList();
+            String[] colunas = new String[]{"Nome","Valor Und.","Qntd.","Valor Total"};
+            ModeloTabela modelo = new ModeloTabela(dados, colunas);
+            jTProdutos2.setModel(modelo);
+            jTProdutos2.getColumnModel().getColumn(0).setPreferredWidth(180);
+            jTProdutos2.getColumnModel().getColumn(0).setResizable(false);
+            jTProdutos2.getColumnModel().getColumn(1).setPreferredWidth(93);
+            jTProdutos2.getColumnModel().getColumn(1).setResizable(false);
+            jTProdutos2.getColumnModel().getColumn(2).setPreferredWidth(45);
+            jTProdutos2.getColumnModel().getColumn(2).setResizable(false);
+            jTProdutos2.getColumnModel().getColumn(3).setPreferredWidth(93);
+            jTProdutos2.getColumnModel().getColumn(3).setResizable(false);
+            jTProdutos2.getTableHeader().setReorderingAllowed(false);
+            jTProdutos2.setAutoResizeMode(jTProdutos2.AUTO_RESIZE_OFF);
+            jTProdutos2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
     }//GEN-LAST:event_jBtnFinalCompraActionPerformed
 
@@ -302,6 +323,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         jCbCliente.setEnabled(true);
         jCbCliente.setSelectedIndex(0);
         jLblTotal.setText("0.00");
+        control2.CompraCanceladaExcluir();
         ArrayList dados = new ArrayList();
         String[] colunas = new String[]{"Nome","Valor Und.","Qntd.","Valor Total"};
         ModeloTabela modelo = new ModeloTabela(dados, colunas);
@@ -421,7 +443,6 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         try {
             conex.rs.first();
             auxiliar2 = conex.rs.getInt("id");
-            JOptionPane.showMessageDialog(null, ""+auxiliar2);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o id da venda!\n"+ex.getMessage());
         }

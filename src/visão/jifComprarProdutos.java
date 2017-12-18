@@ -6,6 +6,8 @@
 package visão;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -21,15 +23,17 @@ import modeloDao.DaoVendas;
  *
  * @author Cayque
  */
-public class jifComprarProdutos extends javax.swing.JInternalFrame {
+public final class jifComprarProdutos extends javax.swing.JInternalFrame {
 
     BeansProduto mod = new BeansProduto();
     BeansVenda modd = new BeansVenda();
     ConexaoBD conex = new ConexaoBD();
     DaoProduto control = new DaoProduto();
     DaoVendas control2 = new DaoVendas();
+    DecimalFormat df = new DecimalFormat("0.00");
+    
     String auxiliar;
-    int auxiliar2,id_cliente,id_venda,quantidade,flag=0;
+    int auxiliar2,id_cliente,id_venda,quantidade,id_produto=0,quant_prod=0;
     private double aux,total=0;
     
     public jifComprarProdutos() {
@@ -276,13 +280,19 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
             jCbCliente.requestFocus();
         }else{
         modd.setId_cliente(id_cliente);
-        modd.setId_produto(PegarIDProduto());
+        id_produto = PegarIDProduto();
+        modd.setId_produto(id_produto);
+        quant_prod = control2.PegarQuantProduto(id_produto);
         quantidade = Integer.parseInt(JOptionPane.showInputDialog("Quantos produtos desse tipo você quer? "));
+        while(quantidade>quant_prod){
+            JOptionPane.showMessageDialog(null, ""+id_produto);
+            quantidade = Integer.parseInt(JOptionPane.showInputDialog("Só existem [ "+quant_prod+" ] produtos deste tipo em estoque \n Digite uma quantidade válida!"));
+        }
         modd.setQuant_produto(quantidade);
         modd.setSubTotal(modd.getQuant_produto()*PegarPrecoProduto());
         control2.SalvarProdutos(modd);
         preencherTabela2("SELECT produtos.nome_produto, produtos.p_saida_produto, produtos_vendas.quantidade_produto FROM produtos,produtos_vendas WHERE produtos_vendas.id_cliente = "+id_cliente+" AND produtos_vendas.id_venda = 0 AND produtos.id_produto = produtos_vendas.id_produtos");
-        jLblTotal.setText(String.valueOf(PegarTotal(id_cliente)));
+        jLblTotal.setText(df.format(PegarTotal(id_cliente)));
         jCbCliente.setEnabled(false);
        }
     }//GEN-LAST:event_jBtnAddCarrinhoActionPerformed
@@ -316,7 +326,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
             jCbCliente.requestFocus();
         }else{
             modd.setId_cliente(id_cliente);
-            modd.setSubTotal(Double.parseDouble(jLblTotal.getText()));
+            modd.setSubTotal(Double.parseDouble(jLblTotal.getText().replaceAll(",", ".")));
             control2.SalvarVendas(modd);
             id_venda=PegarIDVenda("select id from vendas_finalizadas where clientes like "+id_cliente+" order by id desc");
             modd.setId_venda(id_venda);
@@ -374,7 +384,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         try{
             conex.rs.first();
             do{
-            dados.add(new Object[]{conex.rs.getString("produtos.nome_produto"),conex.rs.getDouble("produtos.p_saida_produto"),conex.rs.getInt("produtos_vendas.quantidade_produto"),(conex.rs.getInt("produtos_vendas.quantidade_produto")*conex.rs.getDouble("produtos.p_saida_produto"))});
+            dados.add(new Object[]{conex.rs.getString("produtos.nome_produto"),conex.rs.getDouble("produtos.p_saida_produto"),conex.rs.getInt("produtos_vendas.quantidade_produto"),df.format(conex.rs.getInt("produtos_vendas.quantidade_produto")*conex.rs.getDouble("produtos.p_saida_produto"))});
             }while(conex.rs.next());
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(rootPane, "Erro ao preencher o Array: \n"+ex.getMessage());
@@ -481,6 +491,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         try {
             conex.rs.first();
             aux = conex.rs.getDouble("p_saida_produto");
+            NumberFormat.getCurrencyInstance().format(aux);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possivel encontrar o preço do produto!\n"+ex.getMessage());
         }
@@ -494,6 +505,7 @@ public class jifComprarProdutos extends javax.swing.JInternalFrame {
         try {
             conex.rs.first();
             total= conex.rs.getDouble("soma");
+            NumberFormat.getCurrencyInstance().format(total);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possivel calcular o preço total da venda!\n"+ex.getMessage());
         }

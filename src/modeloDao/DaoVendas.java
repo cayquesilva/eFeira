@@ -7,6 +7,7 @@ package modeloDao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -20,6 +21,9 @@ import modeloConection.ConexaoBD;
 public class DaoVendas {
     ConexaoBD conex = new ConexaoBD();
     BeansVenda mod = new BeansVenda();
+    DecimalFormat df = new DecimalFormat("0.00");
+    
+    private int quantidade=0;
     
     
     
@@ -55,7 +59,7 @@ public class DaoVendas {
             pst.setInt(1, mod.getId_produto());
             pst.setInt(2, mod.getId_cliente());
             pst.setInt(3, mod.getQuant_produto());
-            pst.setDouble(4, mod.getSubTotal());
+            pst.setDouble(4, Double.parseDouble(df.format(mod.getSubTotal()).replaceAll(",", ".")));
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!");
         } catch (SQLException ex) {
@@ -90,5 +94,17 @@ public class DaoVendas {
         conex.desconecta();
     }
     
-
+ public int PegarQuantProduto(int id_produto){
+        conex.conexao();
+        conex.executaSql("select quantidade_produto from produtos where id_produto="+id_produto+"");
+        try {
+            conex.rs.first();
+            quantidade = conex.rs.getInt("quantidade_produto");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao obter a quantidade de produtos!\n"+ex);        
+        }
+        conex.desconecta();
+        return quantidade;
+    }
+    
 }

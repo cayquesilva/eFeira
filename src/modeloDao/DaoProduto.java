@@ -8,6 +8,7 @@ package modeloDao;
 import modeloConection.ConexaoBD;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ public class DaoProduto {
     ConexaoBD conex = new ConexaoBD();
     BeansProduto mod = new BeansProduto();
     private double total=0;
+    DecimalFormat df = new DecimalFormat("0.00");
     
     
     public void Salvar(BeansProduto mod){
@@ -34,7 +36,7 @@ public class DaoProduto {
             pst.setDouble(3, mod.getpVenda());
             pst.setInt(4, mod.getQuantidade());
             pst.setInt(5, mod.getCodigo());
-            pst.setDouble(6,mod.getpCompra()*mod.getQuantidade());
+            pst.setDouble(6,Double.parseDouble(df.format(mod.getpCompra()*mod.getQuantidade()).replaceAll(",", ".")));
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!");
         } catch (SQLException ex) {
@@ -114,4 +116,6 @@ public class DaoProduto {
         total = (PegarLucroReal()/PegarGastoTotal())*100;
         return total;
     }
+    
+
 }

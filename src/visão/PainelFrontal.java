@@ -90,6 +90,7 @@ public class PainelFrontal extends javax.swing.JFrame {
 
         jMenuTopoCadastros.setText("Administrar o Estoque");
 
+        jMenuProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/visão/Icons/estoque 32.png"))); // NOI18N
         jMenuProdutos.setText("Organizar Estoque");
         jMenuProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -104,6 +105,7 @@ public class PainelFrontal extends javax.swing.JFrame {
         jMenuTopoCadastros.add(jMenuProdutos);
         jMenuTopoCadastros.add(jSeparator1);
 
+        jMenuClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/visão/Icons/usuarios.png"))); // NOI18N
         jMenuClientes.setText("Cadastrar Clientes");
         jMenuClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,6 +115,7 @@ public class PainelFrontal extends javax.swing.JFrame {
         jMenuTopoCadastros.add(jMenuClientes);
         jMenuTopoCadastros.add(jSeparator2);
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/visão/Icons/32 relatorios.png"))); // NOI18N
         jMenuItem1.setText("Ver Rendimento Atual");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,6 +128,7 @@ public class PainelFrontal extends javax.swing.JFrame {
 
         jMenuTopoRelatorios.setText("Ver Produtos à Venda");
 
+        JMenuRelProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/visão/Icons/ver produtos 32.png"))); // NOI18N
         JMenuRelProdutos.setText("Produtos");
         JMenuRelProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
